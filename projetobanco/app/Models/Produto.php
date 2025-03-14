@@ -9,6 +9,8 @@ class Produto extends Model
 {
     use HasFactory;
 
+    protected $table = 'Produtos';
+
     protected $fillable = ['nome', 'descricao', 'preco', 'estoque', 'categoria_id'];
 
     public function categoria()//relacionamento de 1 para 1

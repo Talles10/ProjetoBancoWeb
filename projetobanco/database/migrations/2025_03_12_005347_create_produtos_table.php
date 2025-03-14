@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('produtos', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->text('descricao')->nullable();
+            $table->text('marca')->default('Genérica');
             $table->decimal('preco', 10, 2);
-            $table->integer('estoque')->default(0);
-            $table->unsignedBigInteger('categoria_id');
+            $table->integer('quantidade')->default(0);
+            $table->unsignedBigInteger('categoria_id')->nullable();
             $table->foreign('categoria_id')->references('id')->on('categorias')->onDelete('restrict');
             $table->timestamps();
         });
@@ -30,4 +30,5 @@ return new class extends Migration
     {
         Schema::dropIfExists('produtos');
     }
+
 };
