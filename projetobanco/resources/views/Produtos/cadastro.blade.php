@@ -7,15 +7,12 @@
     <title>Cadastro de Produto</title>
 </head>
 <style>
-    /* Reset de estilos básicos */
     * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
         font-family: Arial, sans-serif;
     }
-
-    /* Estilização do container do formulário */
     .container {
         width: 350px;
         margin: 50px auto;
@@ -25,30 +22,26 @@
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         text-align: center;
     }
-
-    /* Título do formulário */
     h2 {
         margin-bottom: 20px;
         color: #333;
     }
-
-    /* Estilização dos labels */
+    .listar{
+        display: flex;
+        justify-content: center;
+    }
     label {
         display: block;
         margin: 10px 0 5px;
         font-weight: bold;
         text-align: left;
     }
-
-    /* Estilização dos inputs */
     input {
         width: 100%;
         padding: 8px;
         border: 1px solid #ccc;
         border-radius: 5px;
     }
-
-    /* Estilização do botão */
     button {
         margin-top: 15px;
         width: 100%;
@@ -65,6 +58,29 @@
     button:hover {
         background: #0056b3;
     }
+    table {
+
+            width: 80%;
+            border-collapse: collapse;
+            box-shadow: 0 4px 8px rgba(0, 0, 255, 0.2);
+            margin-left: 100px;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #1e90ff;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #1e90ff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color:rgb(255, 255, 255);
+        }
+        tr:nth-child(odd) {
+            background-color: #333;
+        }
 </style>
 
 <body>
@@ -112,6 +128,27 @@
             <button type="submit">Cadastrar</button>
         </form>
     </div>
+    <h2 class="listar">Lista de Produtos</h2>
+    <table action="{{ route('Produtos.cadastro') }}">
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Marca</th>
+            <th>Preço</th>
+            <th>Quantidade</th>
+            <th>Categoria</th>
+        </tr>
+        @foreach ($Produtos as $produto)
+        <tr>
+            <td>{{ $produto->id }}</td>
+            <td>{{ $produto->nome }}</td>
+            <td>{{ $produto->marca }}</td>
+            <td>R$ {{ number_format($produto->preco, 2, ',', '.') }}</td>
+            <td>{{ $produto->quantidade }}</td>
+            <td>{{ $produto->categoria->nome }}</td>
+        </tr>
+        @endforeach
+    </table>
 </body>
 
 </html>

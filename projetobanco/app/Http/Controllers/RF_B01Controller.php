@@ -10,7 +10,8 @@ class RF_B01Controller extends Controller
     //
     public function CadastrarProduto(){
         $categorias = Categoria::all(); // Obtém todas as categorias
-        return view('Produtos.cadastro', compact('categorias'));
+        $Produtos = Produto::all(); // Obtém todos os produtos
+        return view('Produtos.cadastro', compact('categorias','Produtos'));
     }
     public function SalvarProduto(Request $request){
         $request->validate([
@@ -35,7 +36,7 @@ class RF_B01Controller extends Controller
         return redirect()->route('Produtos.cadastro');
     }
     public function ListarProdutos(){
-        $produtos = Produto::all();
-        return view('Produtos.listar', ['Produtos' => $produtos]);
+        $Produtos = Produto::all();
+        return view('Produtos.cadastro', ['Produtos' => $Produtos]);
     }
 }
