@@ -9,6 +9,6 @@ class Cliente extends Model //Possue todos os metodos pra fazer a modulação do
 
 {
     use HasFactory;
-
-    protected $fillable = ['nome', 'email', 'telefone', 'cpf']; //Aqui é onde é definido os campos que podem ser preenchidos, para que não haja problemas de segurança
+    protected $table = 'Clientes';
+    protected $fillable = ['nome', 'documento', 'endereco']; //Aqui é onde é definido os campos que podem ser preenchidos, para que não haja problemas de segurança
 }
