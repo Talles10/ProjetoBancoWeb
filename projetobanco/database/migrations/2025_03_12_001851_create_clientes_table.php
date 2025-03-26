@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('clientes', function (Blueprint $table) {
             $table->id(); //PRIMARY KEY AUTO_INCREMENT
-            $table->string('nome', 100); //VARCHAR(100)
-            $table->string('email')->unique();
-            $table->string('tefone')->nullable();
+            $table->string('nome', 80); //VARCHAR(100)
+            $table->string('documento',14)->unique();
+            $table->string('endereco',44 );
             $table->timestamps();
         });
     }
