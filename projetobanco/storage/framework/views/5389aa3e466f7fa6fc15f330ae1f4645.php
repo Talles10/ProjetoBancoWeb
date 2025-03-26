@@ -86,20 +86,20 @@
 <body>
     <div class="container">
         <h2>Cadastro de Cliente</h2>
-        @if($errors->any()) <!-- Verificar se existe algum erro -->
+        <?php if($errors->any()): ?> <!-- Verificar se existe algum erro -->
         <div class="error-messages">
             <ul>
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
+                <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <li><?php echo e($error); ?></li>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </ul>
         </div>
-        @endif
-        @if(session('success')) <!-- caso não tenha erro -->
-        <p class="success">{{ session('success') }}</p>
-        @endif
-        <form method="POST" action="{{ route('Clientes.Salvar') }}">
-            @csrf
+        <?php endif; ?>
+        <?php if(session('success')): ?> <!-- caso não tenha erro -->
+        <p class="success"><?php echo e(session('success')); ?></p>
+        <?php endif; ?>
+        <form method="POST" action="<?php echo e(route('Clientes.Salvar')); ?>">
+            <?php echo csrf_field(); ?>
             <label for="id">Código:</label>
             <input type="text" id="id" name="id" required>
             <label for="nome">Nome:</label>
@@ -112,21 +112,21 @@
         </form>
     </div>
     <h2 class="listar">Lista de Clientes</h2>
-    <table action="{{ route('Clientes.cadastro') }}">
+    <table action="<?php echo e(route('Clientes.cadastro')); ?>">
         <tr>
             <th>ID</th>
             <th>Nome</th>
             <th>Documento (CPF/CNPJ)</th>
             <th>endereco</th>
         </tr>
-        @foreach ($Clientes as $cliente)
+        <?php $__currentLoopData = $Clientes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cliente): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <tr>
-            <td>{{ $cliente->id }}</td>
-            <td>{{ $cliente->nome }}</td>
-            <td>{{ $cliente->documento }}</td>
-            <td>{{ $cliente->endereco }}</td>
+            <td><?php echo e($cliente->id); ?></td>
+            <td><?php echo e($cliente->nome); ?></td>
+            <td><?php echo e($cliente->documento); ?></td>
+            <td><?php echo e($cliente->endereco); ?></td>
         </tr>
-        @endforeach
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     </table>
 </body>
-</html>
+</html><?php /**PATH C:\Users\Aluno\Documents\GitHub\ProjetoBancoWeb\projetobanco\resources\views/Clientes/cadastro.blade.php ENDPATH**/ ?>

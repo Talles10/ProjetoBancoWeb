@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Cliente;
@@ -16,8 +14,8 @@ class RF_B02Controller extends Controller
         $request->validate([
             'id' => 'required|unique:Clientes',
             'nome' => 'required|',
-            'documento' => 'required|numeric|min:11',
-            'endereco' => 'required|',
+            'documento' => ['required', 'regex:/^\d{11}$|^\d{14}$/'],
+            'endereco' => 'required',
         ]);
     
         $cliente = new Cliente();
@@ -30,6 +28,7 @@ class RF_B02Controller extends Controller
     }
     public function ListarCliente(){
         $Clientes = Cliente::all();
+        var_dump($Clientes);
         return view('Cliente.cadastro', ['Cliente' => $Clientes]);
     }
 }
