@@ -535,6 +535,7 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\RF_B01Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/RF_B01Controller.php',
         'App\\Http\\Controllers\\RF_B02Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/RF_B02Controller.php',
+        'App\\Http\\Controllers\\RF_B04Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/RF_B04Controller.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
         'App\\Http\\Middleware\\EncryptCookies' => __DIR__ . '/../..' . '/app/Http/Middleware/EncryptCookies.php',
