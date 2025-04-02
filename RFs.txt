@@ -1,0 +1,2 @@
+esse recurso permite que o supervisor possa cadastrar e excluir funcionarios. 
+Dados como: foto, documentação, remuneração, cargo e dados gerais.
