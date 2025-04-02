@@ -11,7 +11,7 @@ class Produto extends Model
 
     protected $table = 'Produtos';
 
-    protected $fillable = ['nome', 'descricao', 'preco', 'estoque', 'categoria_id'];
+    protected $fillable = ['id','nome','marca', 'descricao', 'preco', 'quantidade', 'categoria_id'];
 
     public function categoria()//relacionamento de 1 para 1
     {

@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RF_B01Controller;
 use App\Http\Controllers\RF_B02Controller;
+use App\Http\Controllers\RF_B04Controller;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,3 +25,8 @@ Route::post('/Produtos/salvar', [RF_B01Controller::class, 'SalvarProduto'])->nam
 
 Route::get('/Clientes/cadastro',[RF_B02Controller::class,'CadastrarCliente'])->name('Clientes.cadastro');
 Route::post('/Clientes/salvar',[RF_B02Controller::class,'SalvarCliente'])->name('Clientes.Salvar');
+
+Route::get('/produtos/editar/{id}', [RF_B01Controller::class, 'EditarProduto'])->name('Produtos.editar');
+Route::post('/produtos/atualizar/{id}', [RF_B01Controller::class, 'AtualizarProduto'])->name('Produtos.atualizar');
+Route::delete('/produtos/excluir/{id}', [RF_B01Controller::class, 'ExcluirProduto'])->name('Produtos.excluir');
+
