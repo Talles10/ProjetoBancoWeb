@@ -31,8 +31,6 @@ button.btn:hover {
 </style>
 <body>
     <h1>Página Principal</h1>
-
-    {{-- Botão usando HTML direto e Laravel route --}}
     <a href="{{ route('Produtos.cadastro') }}">
         <button class="btn">Cadastrar Produto</button>
     </a>
