@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Produto;
 use App\Models\Categoria;
+use App\Models\Cliente;
+use App\Models\Fornecedor;
 
 
 
 class RF_B04Controller extends Controller
 {
+    #PRODUTOS
     public function ExcluirProduto($id)
     {
         $produto = Produto::findOrFail($id);
@@ -23,5 +26,29 @@ class RF_B04Controller extends Controller
         
         return view('Produtos.editar', compact('produto', 'categorias'));
     }
-    
+    #CLIENTES
+    public function ExcluirCliente($id)
+    {
+        $cliente = Cliente::findOrFail($id);
+        $cliente->delete(); 
+        return redirect()->route('Clientes.cadastro')->with('success', 'Cliente excluído com sucesso!');
+    }
+    public function EditarCliente($id)
+    {
+        $cliente = Cliente::findOrFail($id);
+        return view('Clientes.editar', compact('cliente'));
+    }
+
+    #FORNECEDORES
+    public function ExcluirFornecedor($id)
+    {
+        $fornecedor = Fornecedor::findOrFail($id);
+        $fornecedor->delete(); 
+        return redirect()->route('Fornecedores.cadastro')->with('success', 'Fornecedor excluído com sucesso!');
+    }
+    public function EditarFornecedor($id)
+    {
+        $fornecedor = Fornecedor::findOrFail($id);
+        return view('Fornecedores.editar', compact('fornecedor'));
+    }
 }
