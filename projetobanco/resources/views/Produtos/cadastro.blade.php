@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -108,7 +107,6 @@
         }
     </style>
 </head>
-
 <body>
     <div class="container">
         <h2>Cadastro de Produto</h2>
@@ -127,25 +125,18 @@
         @if(session('success'))
         <p class="success">{{ session('success') }}</p>
         @endif
-
         <form method="POST" action="{{ route('Produtos.salvar') }}">
             @csrf
-
             <label for="id">Código:</label>
             <input type="text" id="id" name="id" required>
-
             <label for="nome">Nome:</label>
             <input type="text" id="nome" name="nome" required>
-
             <label for="marca">Marca:</label>
             <input type="text" id="marca" name="marca" required>
-
             <label for="preco">Preço:</label>
             <input type="number" id="preco" name="preco" step="0.01" required>
-
             <label for="quantidade">Quantidade:</label>
             <input type="number" id="quantidade" name="quantidade" required>
-
             <label for="categoria_id">Categoria:</label>
             <select name="categoria_id" id="categoria_id" required>
                 <option value="">Selecione uma Categoria</option>
@@ -156,13 +147,9 @@
                 </option>
                 @endforeach
             </select>
-
-
-
             <button type="submit">Cadastrar</button>
         </form>
     </div>
-
     <h2 class="listar">Lista de Produtos</h2>
     <table>
         <tr>
@@ -174,7 +161,6 @@
             <th>Categoria</th>
             <th>Ações</th>
         </tr>
-
         @foreach ($Produtos as $produto)
         <tr>
             <td>{{ $produto->id }}</td>
@@ -182,22 +168,19 @@
             <td>{{ $produto->marca }}</td>
             <td>R$ {{ number_format($produto->preco, 2, ',', '.') }}</td>
             <td>{{ $produto->quantidade }}</td>
-            <td>{{ $produto->categoria->nome }}</td>
+            <td>{{ $categoria->nome}}</td>
             <td>
                 <a href="{{ route('Produtos.editar', $produto->id) }}">
                     <button type="button">Editar</button>
                 </a>
-
                 <form action="{{ route('Produtos.excluir', $produto->id) }}" method="POST" style="display:inline;">
                     @csrf
                     @method('DELETE')
                     <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este produto?')">Excluir</button>
                 </form>
             </td>
-
         </tr>
         @endforeach
     </table>
 </body>
-
 </html>

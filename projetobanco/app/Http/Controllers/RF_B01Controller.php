@@ -28,6 +28,7 @@ class RF_B01Controller extends Controller
             'marca' => 'required',
             'preco' => 'required|numeric|min:0',
             'quantidade' => 'required|integer|min:0',
+            'categoria_id' => 'required|exists:categorias,id'
         ]);
 
         $categoria = Categoria::firstOrCreate(['nome' => 'Perfumes']);
