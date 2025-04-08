@@ -157,9 +157,6 @@
                 </option>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </select>
-
-
-
             <button type="submit">Cadastrar</button>
         </form>
     </div>
@@ -175,7 +172,6 @@
             <th>Categoria</th>
             <th>Ações</th>
         </tr>
-
         <?php $__currentLoopData = $Produtos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $produto): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <tr>
             <td><?php echo e($produto->id); ?></td>
@@ -183,7 +179,7 @@
             <td><?php echo e($produto->marca); ?></td>
             <td>R$ <?php echo e(number_format($produto->preco, 2, ',', '.')); ?></td>
             <td><?php echo e($produto->quantidade); ?></td>
-            <td><?php echo e($produto->categoria->nome); ?></td>
+            <td><?php echo e($categoria->nome); ?></td>
             <td>
                 <a href="<?php echo e(route('Produtos.editar', $produto->id)); ?>">
                     <button type="button">Editar</button>
