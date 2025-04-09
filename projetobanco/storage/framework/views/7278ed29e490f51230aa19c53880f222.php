@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -106,9 +105,25 @@
         .success {
             color: green;
         }
+        button.btn {
+            margin-top: 20px;
+            width: 310px;
+            margin-left: 1045px;
+            padding: 10px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease;
+        }
+
+        button.btn:hover {
+            background: #0056b3;
+        }
     </style>
 </head>
-
 <body>
     <div class="container">
         <h2>Cadastro de Produto</h2>
@@ -127,25 +142,18 @@
         <?php if(session('success')): ?>
         <p class="success"><?php echo e(session('success')); ?></p>
         <?php endif; ?>
-
         <form method="POST" action="<?php echo e(route('Produtos.salvar')); ?>">
             <?php echo csrf_field(); ?>
-
             <label for="id">Código:</label>
             <input type="text" id="id" name="id" required>
-
             <label for="nome">Nome:</label>
             <input type="text" id="nome" name="nome" required>
-
             <label for="marca">Marca:</label>
             <input type="text" id="marca" name="marca" required>
-
             <label for="preco">Preço:</label>
             <input type="number" id="preco" name="preco" step="0.01" required>
-
             <label for="quantidade">Quantidade:</label>
             <input type="number" id="quantidade" name="quantidade" required>
-
             <label for="categoria_id">Categoria:</label>
             <select name="categoria_id" id="categoria_id" required>
                 <option value="">Selecione uma Categoria</option>
@@ -160,7 +168,6 @@
             <button type="submit">Cadastrar</button>
         </form>
     </div>
-
     <h2 class="listar">Lista de Produtos</h2>
     <table>
         <tr>
@@ -170,7 +177,7 @@
             <th>Preço</th>
             <th>Quantidade</th>
             <th>Categoria</th>
-            <th>Ações</th>
+            <th>Gerenciar</th>
         </tr>
         <?php $__currentLoopData = $Produtos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $produto): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <tr>
@@ -184,17 +191,17 @@
                 <a href="<?php echo e(route('Produtos.editar', $produto->id)); ?>">
                     <button type="button">Editar</button>
                 </a>
-
                 <form action="<?php echo e(route('Produtos.excluir', $produto->id)); ?>" method="POST" style="display:inline;">
                     <?php echo csrf_field(); ?>
                     <?php echo method_field('DELETE'); ?>
                     <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este produto?')">Excluir</button>
                 </form>
             </td>
-
         </tr>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     </table>
+    <a href="<?php echo e(route('home')); ?>"><button class="btn">
+        Voltar
+    </button></a>
 </body>
-
 </html><?php /**PATH C:\Users\USER\Documents\GitHub\ProjetoBancoWeb\projetobanco\resources\views/Produtos/cadastro.blade.php ENDPATH**/ ?>
