@@ -7,6 +7,8 @@ use App\Http\Controllers\RF_B03Controller;
 use App\Http\Controllers\RF_B04Controller;
 use App\Http\Controllers\RF_F01Controller;
 use App\Http\Controllers\RF_F02Controller;
+use App\Http\Controllers\RF_S01Controller;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -48,3 +50,6 @@ Route::delete('/Compras/{id}/excluir', [RF_F01Controller::class, 'excluirCompra'
 Route::match(['get', 'post'], '/Vendas/cadastro', [RF_F02Controller::class, 'cadastrarVenda'])->name('Vendas.cadastro');
 Route::post('/Vendas/cadastro', [RF_F02Controller::class, 'buscarProduto'])->name('Vendas.buscar');
 Route::post('/Vendas/salvar', [RF_F02Controller::class, 'salvarVenda'])->name('Vendas.salvar');
+
+
+Route::get('/Relatorios/Vendas', [RF_S01Controller::class, 'relatorioVendas'])->name('Relatorios.vendas');

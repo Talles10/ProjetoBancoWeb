@@ -54,7 +54,7 @@ header {
     align-items: stretch;
     min-width: 220px;
     gap: 15px;
-    margin-top: 30px;
+    margin-top: 5px;
 }
 
 button.btn-1 {
@@ -123,6 +123,17 @@ button.btn-6 {
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
+button.btn-7{
+    width: 100%;
+    padding: 12px 0;
+    background-color:rgb(255, 217, 0);
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 button.btn-1:hover {
     background-color: #0056b3;
 }
@@ -139,6 +150,9 @@ button.btn-5:hover {
     background-color: #0056b3;
 }
 button.btn-6:hover {
+    background-color: #0056b3;
+}
+button.btn-7:hover{
     background-color: #0056b3;
 }
 
@@ -166,7 +180,6 @@ h1 {
             <p>Aqui oferecemos uma ótima experiência de vendas, com interface de usuário autêntica e bastante intuitiva...</p>
             <p>Nosso sistema é voltado para o gerenciamento de vendas, compras e estoque de produtos</p>
         </div>
-
         <div class="buttons">
             <a href="{{ route('Produtos.cadastro') }}"><button class="btn-1">Cadastrar Produto</button></a>
             <a href="{{ route('Clientes.cadastro') }}"><button class="btn-2">Cadastrar Cliente</button></a>
@@ -174,6 +187,7 @@ h1 {
             <a href="{{ route('Funcionarios.cadastro') }}"><button class="btn-4">Cadastrar Funcionario</button></a>
             <a href="{{ route('Compras.cadastro') }}"><button class="btn-5">Cadastrar Compra</button></a>
             <a href="{{ route('Vendas.cadastro') }}"><button class="btn-6">Realizar Venda</button></a>
+            <a href="{{ route('Relatorios.vendas') }}"><button class="btn-7">Relatório de Vendas</button></a>
         </div>
     </div>
 </body>
