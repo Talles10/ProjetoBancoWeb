@@ -97,8 +97,17 @@
 <body>
     <div class="container">
         <h2>Cadastro de Funcionários</h2>
-        @if($errors->any()) <!-- Verificar se existe algum erro -->
-        <form method="post">
+        @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+        <form method="POST" action="{{ route('Funcionarios.salvar') }}">
+            @csrf
             <div class="mb-3">
                 <label for="id" class="form-label">ID</label>
                 <input type="number" id="id" name="id" class="form-control" required="">
@@ -107,32 +116,27 @@
                 <label for="nome" class="form-label">Nome</label>
                 <input type="text" id="nome" name="nome" class="form-control" required="">
             </div>
-
             <div class="mb-3">
                 <label for="documento" class="form-label">CPF</label>
                 <input type="number" id="documento" name="documento" class="form-control" required="">
             </div>
-
             <div class="mb-3">
                 <label for="salario" class="form-label">Salário</label>
                 <input type="number" id="salario" name="salario" class="form-control" required="">
             </div>
-
             <div class="mb-3">
                 <label for="cargo" class="form-label">Cargo</label>
                 <input type="text" id="cargo" name="cargo" class="form-control" required="">
             </div>
-
             <div class="mb-3">
                 <label for="email" class="form-label">E-mail</label>
                 <input type="email" id="email" name="email" class="form-control">
             </div>
-
             <button type="submit" class="btn btn-primary">Enviar</button>
         </form>
     </div>
     <h2 class="listar">Lista de Funcionários</h2>
-    <table action="{{ route('Funcionarios.gerenciar') }}">
+    <table action = "{{ route('Funcionarios.gerenciar') }}">
         <tr>
             <th>ID</th>
             <th>Nome</th>
@@ -141,7 +145,7 @@
             <th>Cargo</th>
             <th>E-mail</th>
         </tr>
-        @foreach ($Funcionario as $funcionario)
+        @foreach ($Funcionarios as $funcionario)
         <tr>
             <td>{{ $funcionario->id }}</td>
             <td>{{ $funcionario->nome }}</td>
@@ -152,6 +156,12 @@
         </tr>
         @endforeach
     </table>
+
 </body>
+@if(session('success'))
+<div class="alert alert-success">
+    {{ session('success') }}
+</div>
+@endif
 
 </html>
