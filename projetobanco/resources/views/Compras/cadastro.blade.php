@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Produto</title>
+    <title>Cadastro de Compra</title>
     <style>
+        /* Mesmo CSS base usado anteriormente */
         * {
             margin: 0;
             padding: 0;
@@ -40,11 +41,7 @@
             text-align: left;
         }
 
-        input,
-        select {
-            position: relative;
-            /* Torna o z-index funcional */
-            z-index: 10;
+        input, select {
             width: 100%;
             padding: 8px;
             border: 1px solid #ccc;
@@ -73,12 +70,10 @@
             width: 80%;
             border-collapse: collapse;
             box-shadow: 0 4px 8px rgba(0, 0, 255, 0.2);
-            margin-left: 100px;
-            margin-bottom: 20px;
+            margin: 30px auto;
         }
 
-        th,
-        td {
+        th, td {
             border: 1px solid #1e90ff;
             padding: 10px;
             text-align: center;
@@ -126,77 +121,65 @@
 </head>
 <body>
     <div class="container">
-        <h2>Cadastro de Produto</h2>
-        <!-- Exibição de erros -->
+        <h2>Cadastro de Compra</h2>
         @if($errors->any())
-        <div class="error-messages">
-            <ul>
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
+            <div class="error-messages">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
         @endif
-
-        <!-- Exibição de sucesso -->
         @if(session('success'))
-        <p class="success">{{ session('success') }}</p>
+            <p class="success">{{ session('success') }}</p>
         @endif
-        <form method="POST" action="{{ route('Produtos.salvar') }}">
+        <form method="POST" action="{{ route('Compras.salvar') }}">
             @csrf
-            <label for="id">Código:</label>
-            <input type="text" id="id" name="id" required>
-            <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome" required>
-            <label for="marca">Marca:</label>
-            <input type="text" id="marca" name="marca" required>
-            <label for="preco">Preço:</label>
-            <input type="number" id="preco" name="preco" step="0.01" required>
-            <label for="quantidade">Quantidade:</label>
-            <input type="number" id="quantidade" name="quantidade" required>
-            <label for="categoria_id">Categoria:</label>
-            <select name="categoria_id" id="categoria_id" required>
-                <option value="">Selecione uma Categoria</option>
-                @foreach($categorias as $categoria)
-                <option value="{{ $categoria->id }}"
-                    {{ isset($categoriaSelecionada) && $categoriaSelecionada->id == $categoria->id ? 'selected' : '' }}>
-                    {{ $categoria->nome }}
-                </option>
+            <label for="produto_id">Produto:</label>
+            <select name="produto_id" id="produto_id" required>
+                <option value="">Selecione um Produto</option>
+                @foreach($produtos as $produto)
+                    <option value="{{ $produto->id }}">{{ $produto->nome }}</option>
                 @endforeach
             </select>
-            <button type="submit">Cadastrar</button>
+            <label for="quantidade">Quantidade:</label>
+            <input type="number" name="quantidade" id="quantidade" required>
+            <label for="preco_total">Preço Total:</label>
+            <input type="number" name="preco_total" id="preco_total" step="0.01" required>
+            <label for="data_compra">Data da Compra:</label>
+            <input type="date" name="data_compra" id="data_compra" required>
+            <button type="submit">Cadastrar Compra</button>
         </form>
     </div>
-    <h2 class="listar">Lista de Produtos</h2>
+    <h2 class="listar">Lista de Compras</h2>
     <table>
         <tr>
             <th>ID</th>
-            <th>Nome</th>
-            <th>Marca</th>
-            <th>Preço</th>
+            <th>Produto</th>
             <th>Quantidade</th>
-            <th>Categoria</th>
+            <th>Preço Total</th>
+            <th>Data</th>
             <th>Gerenciar</th>
         </tr>
-        @foreach ($Produtos as $produto)
-        <tr>
-            <td>{{ $produto->id }}</td>
-            <td>{{ $produto->nome }}</td>
-            <td>{{ $produto->marca }}</td>
-            <td>R$ {{ number_format($produto->preco, 2, ',', '.') }}</td>
-            <td>{{ $produto->quantidade }}</td>
-            <td>{{ $categoria->nome}}</td>
-            <td>
-                <a href="{{ route('Produtos.editar', $produto->id) }}">
-                    <button type="button">Editar</button>
-                </a>
-                <form action="{{ route('Produtos.excluir', $produto->id) }}" method="POST" style="display:inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este produto?')">Excluir</button>
-                </form>
-            </td>
-        </tr>
+        @foreach ($compras as $compra)
+            <tr>
+                <td>{{ $compra->id }}</td>
+                <td>{{ $compra->produto->nome }}</td>
+                <td>{{ $compra->quantidade }}</td>
+                <td>R$ {{ number_format($compra->preco_total, 2, ',', '.') }}</td>
+                <td>{{ \Carbon\Carbon::parse($compra->data_compra)->format('d/m/Y') }}</td>
+                <td>
+                    <a href="{{ route('Compras.editar', $compra->id) }}">
+                        <button type="button">Editar</button>
+                    </a>
+                    <form action="{{ route('Compras.excluir', $compra->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" onclick="return confirm('Deseja excluir esta compra?')">Excluir</button>
+                    </form>
+                </td>
+            </tr>
         @endforeach
     </table>
     <a href="{{ route('home') }}"><button class="btn">

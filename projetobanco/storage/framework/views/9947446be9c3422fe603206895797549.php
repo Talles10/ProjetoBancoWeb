@@ -92,6 +92,23 @@
     tr:nth-child(odd) {
         background-color: #333;
     }
+    button.btn {
+            margin-top: 20px;
+            width: 310px;
+            margin-left: 1045px;
+            padding: 10px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease;
+        }
+
+        button.btn:hover {
+            background: #0056b3;
+        }
 </style>
 
 <body>
@@ -173,7 +190,9 @@
         </tr>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     </table>
-
+    <a href="<?php echo e(route('home')); ?>"><button class="btn">
+        Voltar
+    </button></a>
 </body>
 
 
