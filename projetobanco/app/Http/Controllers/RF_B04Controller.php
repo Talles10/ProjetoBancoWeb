@@ -6,6 +6,7 @@ use App\Models\Produto;
 use App\Models\Categoria;
 use App\Models\Cliente;
 use App\Models\Fornecedor;
+use App\Models\Funcionario;
 
 
 
@@ -50,5 +51,17 @@ class RF_B04Controller extends Controller
     {
         $fornecedor = Fornecedor::findOrFail($id);
         return view('Fornecedores.editar', compact('fornecedor'));
+    }
+    #FUNCIONARIOS
+    public function ExcluirFuncionario($id)
+    {
+        $funcionario = Funcionario::findOrFail($id);
+        $funcionario->delete(); 
+        return redirect()->route('Funcionarios.cadastro')->with('success', 'Funcionário excluído com sucesso!');
+    }
+    public function EditarFuncionario($id)
+    {
+        $funcionario = Funcionario::findOrFail($id);
+        return view('Funcionarios.editar', compact('funcionario'));
     }
 }
