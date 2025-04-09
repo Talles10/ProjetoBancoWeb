@@ -85,7 +85,6 @@
         }
     </style>
 </head>
-
 <body>
     <div class="container">
         <h2>Editar Compra</h2>
@@ -98,11 +97,9 @@
             </ul>
         </div>
         <?php endif; ?>
-
         <form method="POST" action="<?php echo e(route('Compras.atualizar', $compra->id)); ?>">
             <?php echo csrf_field(); ?>
             <?php echo method_field('PUT'); ?>
-
             <label for="produto_id">Produto:</label>
             <select name="produto_id" id="produto_id" required>
                 <option value="">Selecione um Produto</option>
@@ -113,21 +110,15 @@
                 </option>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </select>
-
             <label for="quantidade">Quantidade:</label>
             <input type="number" name="quantidade" id="quantidade" value="<?php echo e($compra->quantidade); ?>" required>
-
             <label for="preco_total">Preço Total:</label>
             <input type="number" name="preco_total" id="preco_total" step="0.01" value="<?php echo e($compra->preco_total); ?>" required>
-
             <label for="data_compra">Data da Compra:</label>
             <input type="date" name="data_compra" id="data_compra" value="<?php echo e($compra->data_compra); ?>" required>
-
             <button type="submit">Salvar Alterações</button>
         </form>
-
         <a href="<?php echo e(route('Compras.cadastro')); ?>" class="voltar">← Voltar ao Cadastro</a>
     </div>
 </body>
-
 </html><?php /**PATH C:\Users\USER\Documents\GitHub\ProjetoBancoWeb\projetobanco\resources\views/Compras/editar.blade.php ENDPATH**/ ?>

@@ -126,7 +126,7 @@
         <input type="text " id="endereco" name="endereco" value="<?php echo e($fornecedor->endereco); ?>" required>
 
         <label for="produtos_disponiveis">Produtos Disponíveis:</label>
-        <input type="list" id="produtos_disponiveis" name="produtos_disponiveis" value="<?php echo e($fornecedor->produtos_disponiveis); ?>" required>
+        <input type="text" id="produtos_disponiveis" name="produtos_disponiveis" value="<?php echo e($fornecedor->produtos_disponiveis); ?>" required>
 
         <label for="formas_pagamento">Formas de Pagamento:</label>
         <input type="text" id="formas_pagamento" name="formas_pagamento" value="<?php echo e($fornecedor->formas_pagamento); ?>" required>

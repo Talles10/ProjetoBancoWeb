@@ -92,23 +92,24 @@
     tr:nth-child(odd) {
         background-color: #333;
     }
-    button.btn {
-            margin-top: 20px;
-            width: 310px;
-            margin-left: 1045px;
-            padding: 10px;
-            background: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background 0.3s ease;
-        }
 
-        button.btn:hover {
-            background: #0056b3;
-        }
+    button.btn {
+        margin-top: 20px;
+        width: 310px;
+        margin-left: 1045px;
+        padding: 10px;
+        background: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background 0.3s ease;
+    }
+
+    button.btn:hover {
+        background: #0056b3;
+    }
 </style>
 
 <body>
@@ -154,7 +155,7 @@
                 <label for="email" class="form-label">E-mail</label>
                 <input type="email" id="email" name="email" class="form-control">
             </div>
-            <button type="submit" class="btn btn-primary">Enviar</button>
+            <button type="submit">Cadastrar</button>
         </form>
     </div>
     <h2 class="listar">Lista de Funcionários</h2>
@@ -190,8 +191,8 @@
         @endforeach
     </table>
     <a href="{{ route('home') }}"><button class="btn">
-        Voltar
-    </button></a>
+            Voltar
+        </button></a>
 </body>
 
 

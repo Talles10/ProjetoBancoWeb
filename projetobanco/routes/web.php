@@ -6,6 +6,7 @@ use App\Http\Controllers\RF_B02Controller;
 use App\Http\Controllers\RF_B03Controller;
 use App\Http\Controllers\RF_B04Controller;
 use App\Http\Controllers\RF_F01Controller;
+use App\Http\Controllers\RF_F02Controller;
 
 Route::get('/', function () {
     return view('welcome');
@@ -43,3 +44,7 @@ Route::post('/Compras/salvar', [RF_F01Controller::class, 'salvarCompra'])->name(
 Route::get('/Compras/{id}/editar', [RF_F01Controller::class, 'editarCompra'])->name('Compras.editar');
 Route::put('/Compras/{id}/atualizar', [RF_F01Controller::class, 'atualizarCompra'])->name('Compras.atualizar');
 Route::delete('/Compras/{id}/excluir', [RF_F01Controller::class, 'excluirCompra'])->name('Compras.excluir');
+
+Route::match(['get', 'post'], '/Vendas/cadastro', [RF_F02Controller::class, 'cadastrarVenda'])->name('Vendas.cadastro');
+Route::post('/Vendas/cadastro', [RF_F02Controller::class, 'buscarProduto'])->name('Vendas.buscar');
+Route::post('/Vendas/salvar', [RF_F02Controller::class, 'salvarVenda'])->name('Vendas.salvar');
