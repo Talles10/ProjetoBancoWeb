@@ -127,7 +127,6 @@
 <body>
     <div class="container">
         <h2>Cadastro de Produto</h2>
-        <!-- Exibição de erros -->
         @if($errors->any())
         <div class="error-messages">
             <ul>
@@ -137,8 +136,6 @@
             </ul>
         </div>
         @endif
-
-        <!-- Exibição de sucesso -->
         @if(session('success'))
         <p class="success">{{ session('success') }}</p>
         @endif

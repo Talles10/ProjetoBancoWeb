@@ -13,9 +13,9 @@ class Produto extends Model
 
     protected $fillable = ['id','nome','marca', 'descricao', 'preco', 'quantidade', 'categoria_id'];
 
-    public function categoria()//relacionamento de 1 para 1
+    public function categoria()
     {
-        return $this->belongsTo(Categoria::class);//um produto pertence a uma categoria
+        return $this->belongsTo(Categoria::class);
     }
 }
 

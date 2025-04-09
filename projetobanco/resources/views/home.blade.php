@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
@@ -7,165 +8,177 @@
 </head>
 <style>
     body {
-    background-color: #f0f8ff;
-    font-family: Arial, sans-serif;
-    padding-top: 120px;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+        background-color: #f0f8ff;
+        font-family: Arial, sans-serif;
+        padding-top: 120px;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-header {
-    background-color: #007BFF;
-    color: white;
-    padding: 20px;
-    text-align: center;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 10;
-}
+    header {
+        background-color: #007BFF;
+        color: white;
+        padding: 20px;
+        text-align: center;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 10;
+    }
 
-.content {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 40px;
-    max-width: 1200px;
-    width: 100%;
-    padding: 20px;
-}
+    .content {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 40px;
+        max-width: 1200px;
+        width: 100%;
+        padding: 20px;
+    }
 
-.container {
-    background-color: #007BFF;
-    color: white;
-    border-radius: 10px;
-    padding: 30px;
-    max-width: 600px;
-    box-shadow: 0px 0px 10px #ccc;
-    text-align: start;
-    flex: 1;
-}
+    .container {
+        background-color: #007BFF;
+        color: white;
+        border-radius: 10px;
+        padding: 30px;
+        max-width: 600px;
+        box-shadow: 0px 0px 10px #ccc;
+        text-align: start;
+        flex: 1;
+    }
 
-.buttons {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    min-width: 220px;
-    gap: 15px;
-    margin-top: 5px;
-}
+    .buttons {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        min-width: 220px;
+        gap: 15px;
+        margin-top: 5px;
+    }
 
-button.btn-1 {
-    width: 100%;
-    padding: 12px 0;
-    background-color: #007BFF;
-    border: none;
-    color: white;
-    font-size: 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-button.btn-2 {
-    width: 100%;
-    padding: 12px 0;
-    background-color:rgb(0, 139, 63);
-    border: none;
-    color: white;
-    font-size: 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-button.btn-3 {
-    width: 100%;
-    padding: 12px 0;
-    background-color:rgb(192, 0, 0);
-    border: none;
-    color: white;
-    font-size: 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-button.btn-4 {
-    width: 100%;
-    padding: 12px 0;
-    background-color:rgb(170, 0, 162);
-    border: none;
-    color: white;
-    font-size: 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-button.btn-5 {
-    width: 100%;
-    padding: 12px 0;
-    background-color:rgb(0, 155, 160);
-    border: none;
-    color: white;
-    font-size: 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-button.btn-6 {
-    width: 100%;
-    padding: 12px 0;
-    background-color:rgb(0, 0, 0);
-    border: none;
-    color: white;
-    font-size: 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-button.btn-7{
-    width: 100%;
-    padding: 12px 0;
-    background-color:rgb(255, 217, 0);
-    border: none;
-    color: white;
-    font-size: 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-button.btn-1:hover {
-    background-color: #0056b3;
-}
-button.btn-2:hover {
-    background-color: #0056b3;
-}
-button.btn-3:hover {
-    background-color: #0056b3;
-}
-button.btn-4:hover {
-    background-color: #0056b3;
-}
-button.btn-5:hover {
-    background-color: #0056b3;
-}
-button.btn-6:hover {
-    background-color: #0056b3;
-}
-button.btn-7:hover{
-    background-color: #0056b3;
-}
+    button.btn-1 {
+        width: 100%;
+        padding: 12px 0;
+        background-color: #007BFF;
+        border: none;
+        color: white;
+        font-size: 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
 
-p {
-    margin: 10px 0;
-    font-size: 20px;
-}
+    button.btn-2 {
+        width: 100%;
+        padding: 12px 0;
+        background-color: rgb(0, 139, 63);
+        border: none;
+        color: white;
+        font-size: 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
 
-h1 {
-    font-size: 32px;
-    margin-bottom: 20px;
-}
+    button.btn-3 {
+        width: 100%;
+        padding: 12px 0;
+        background-color: rgb(192, 0, 0);
+        border: none;
+        color: white;
+        font-size: 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
 
+    button.btn-4 {
+        width: 100%;
+        padding: 12px 0;
+        background-color: rgb(170, 0, 162);
+        border: none;
+        color: white;
+        font-size: 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    button.btn-5 {
+        width: 100%;
+        padding: 12px 0;
+        background-color: rgb(0, 155, 160);
+        border: none;
+        color: white;
+        font-size: 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    button.btn-6 {
+        width: 100%;
+        padding: 12px 0;
+        background-color: rgb(0, 0, 0);
+        border: none;
+        color: white;
+        font-size: 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    button.btn-7 {
+        width: 100%;
+        padding: 12px 0;
+        background-color: rgb(255, 217, 0);
+        border: none;
+        color: white;
+        font-size: 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    button.btn-1:hover {
+        background-color: #0056b3;
+    }
+
+    button.btn-2:hover {
+        background-color: #0056b3;
+    }
+
+    button.btn-3:hover {
+        background-color: #0056b3;
+    }
+
+    button.btn-4:hover {
+        background-color: #0056b3;
+    }
+
+    button.btn-5:hover {
+        background-color: #0056b3;
+    }
+
+    button.btn-6:hover {
+        background-color: #0056b3;
+    }
+
+    button.btn-7:hover {
+        background-color: #0056b3;
+    }
+
+    p {
+        margin: 10px 0;
+        font-size: 20px;
+    }
+
+    h1 {
+        font-size: 32px;
+        margin-bottom: 20px;
+    }
 </style>
 <body>
     <header>
@@ -191,4 +204,5 @@ h1 {
         </div>
     </div>
 </body>
+
 </html>

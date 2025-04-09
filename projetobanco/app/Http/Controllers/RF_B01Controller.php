@@ -47,8 +47,8 @@ class RF_B01Controller extends Controller
 
     public function EditarProduto($id)
     {
-        $produto = Produto::findOrFail($id); // Busca o produto pelo ID
-        $categorias = Categoria::all(); // Obtém todas as categorias disponíveis
+        $produto = Produto::findOrFail($id);
+        $categorias = Categoria::all(); 
 
         return view('Produtos.editar', compact('produto', 'categorias'));
     }

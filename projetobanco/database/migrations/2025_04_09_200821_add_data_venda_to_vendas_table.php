@@ -6,20 +6,12 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up()
     {
         Schema::table('vendas', function (Blueprint $table) {
             $table->date('data_venda')->after('preco_total')->nullable();
         });
     }
-
-
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::table('vendas', function (Blueprint $table) {

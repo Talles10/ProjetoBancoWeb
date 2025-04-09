@@ -115,7 +115,7 @@
 <body>
     <div class="container">
         <h2>Cadastro de Cliente</h2>
-        @if($errors->any()) <!-- Verificar se existe algum erro -->
+        @if($errors->any())
         <div class="error-messages">
             <ul>
                 @foreach ($errors->all() as $error)
@@ -124,7 +124,7 @@
             </ul>
         </div>
         @endif
-        @if(session('success')) <!-- caso não tenha erro -->
+        @if(session('success'))
         <p class="success">{{ session('success') }}</p>
         @endif
         <form method="POST" action="{{ route('Clientes.Salvar') }}">

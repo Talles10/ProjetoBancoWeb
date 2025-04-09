@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Compra</title>
     <style>
-        /* Mesmo CSS usado nas outras páginas */
         * {
             margin: 0;
             padding: 0;
