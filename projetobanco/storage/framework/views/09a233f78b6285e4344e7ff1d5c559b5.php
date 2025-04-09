@@ -43,6 +43,9 @@ button.btn:hover {
     <a href="<?php echo e(route('Fornecedores.cadastro')); ?>">
         <button class="btn">Cadastrar Fornecedor</button>
     </a>
+    <a href="<?php echo e(route('Funcionarios.cadastro')); ?>">
+        <button class="btn">Cadastrar Funcionario</button>
+    </a>
 </body>
 </html>
 <?php /**PATH C:\Users\USER\Documents\GitHub\ProjetoBancoWeb\projetobanco\resources\views/home.blade.php ENDPATH**/ ?>

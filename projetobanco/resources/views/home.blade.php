@@ -43,5 +43,8 @@ button.btn:hover {
     <a href="{{ route('Fornecedores.cadastro') }}">
         <button class="btn">Cadastrar Fornecedor</button>
     </a>
+    <a href="{{ route('Funcionarios.cadastro')}}">
+        <button class="btn">Cadastrar Funcionario</button>
+    </a>
 </body>
 </html>

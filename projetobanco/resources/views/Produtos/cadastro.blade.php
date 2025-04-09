@@ -159,7 +159,7 @@
             <th>Preço</th>
             <th>Quantidade</th>
             <th>Categoria</th>
-            <th>Ações</th>
+            <th>Gerenciar</th>
         </tr>
         @foreach ($Produtos as $produto)
         <tr>

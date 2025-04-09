@@ -150,6 +150,7 @@
             <th>Salário</th>
             <th>Cargo</th>
             <th>E-mail</th>
+            <th>Gerenciar</th>
         </tr>
         <?php $__currentLoopData = $Funcionarios; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $funcionario): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <tr>
