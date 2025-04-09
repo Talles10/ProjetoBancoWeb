@@ -149,6 +149,7 @@
             <th>Salário</th>
             <th>Cargo</th>
             <th>E-mail</th>
+            <th>Gerenciar</th>
         </tr>
         @foreach ($Funcionarios as $funcionario)
         <tr>
