@@ -8,7 +8,7 @@ use App\Http\Controllers\RF_B04Controller;
 use App\Http\Controllers\RF_F01Controller;
 use App\Http\Controllers\RF_F02Controller;
 use App\Http\Controllers\RF_S01Controller;
-
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('welcome');
@@ -51,5 +51,12 @@ Route::match(['get', 'post'], '/Vendas/cadastro', [RF_F02Controller::class, 'cad
 Route::post('/Vendas/cadastro', [RF_F02Controller::class, 'buscarProduto'])->name('Vendas.buscar');
 Route::post('/Vendas/salvar', [RF_F02Controller::class, 'salvarVenda'])->name('Vendas.salvar');
 
+/* Route::get('/login', [AuthController::class, 'ShowFormlogin']);
+Route::post('/login', [AuthController::class, 'login']);
 
+Route::middleware("auth")->group(function(){
+    Route::resource('produtos', ProdutoController::class);
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
+*/
 Route::get('/Relatorios/Vendas', [RF_S01Controller::class, 'relatorioVendas'])->name('Relatorios.vendas');
