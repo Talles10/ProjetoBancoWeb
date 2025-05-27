@@ -8,6 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 class Fornecedor extends Model
 {
     use HasFactory;
-    protected $table = 'Fornecedores';
-    protected $fillable = ['nome', 'documento', 'endereco' , 'produtos_disponiveis', 'formas_pagamento', 'telefone', 'email'];
+
+    protected $table = 'fornecedores';
+
+    protected $fillable = [
+        'nome',
+        'cnpj',
+        'email',
+        'telefone',
+        'endereco',
+        'contato'
+    ];
+
+    public function produtos()
+    {
+        return $this->hasMany(Produto::class);
+    }
 }

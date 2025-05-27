@@ -9,6 +9,8 @@ use App\Http\Controllers\RF_F01Controller;
 use App\Http\Controllers\RF_F02Controller;
 use App\Http\Controllers\RF_S01Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProdutosController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -16,11 +18,11 @@ Route::get('/', function () {
 Route::get('/', function () {
     return view('home');
 })->name('home');
-Route::get('/Produtos/cadastro', [RF_B01Controller::class, 'CadastrarProduto'])->name('Produtos.cadastro');
-Route::post('/Produtos/salvar', [RF_B01Controller::class, 'SalvarProduto'])->name('Produtos.salvar');
-Route::get('/produtos/editar/{id}', [RF_B04Controller::class, 'EditarProduto'])->name('Produtos.editar');
-Route::post('/produtos/atualizar/{id}', [RF_B01Controller::class, 'AtualizarProduto'])->name('Produtos.atualizar');
-Route::delete('/produtos/excluir/{id}', [RF_B04Controller::class, 'ExcluirProduto'])->name('Produtos.excluir');
+Route::get('/Produtos/cadastro', [ProdutosController::class, 'index'])->name('Produtos.cadastro');
+Route::post('/Produtos/salvar', [ProdutosController::class, 'store'])->name('Produtos.salvar');
+Route::get('/Produtos/editar/{id}', [ProdutosController::class, 'edit'])->name('Produtos.editar');
+Route::put('/Produtos/atualizar/{id}', [ProdutosController::class, 'update'])->name('Produtos.atualizar');
+Route::delete('/Produtos/excluir/{id}', [ProdutosController::class, 'destroy'])->name('Produtos.excluir');
 
 Route::get('/Clientes/cadastro',[RF_B02Controller::class,'CadastrarCliente'])->name('Clientes.cadastro');
 Route::post('/Clientes/salvar',[RF_B02Controller::class,'SalvarCliente'])->name('Clientes.Salvar');
@@ -51,12 +53,20 @@ Route::match(['get', 'post'], '/Vendas/cadastro', [RF_F02Controller::class, 'cad
 Route::post('/Vendas/cadastro', [RF_F02Controller::class, 'buscarProduto'])->name('Vendas.buscar');
 Route::post('/Vendas/salvar', [RF_F02Controller::class, 'salvarVenda'])->name('Vendas.salvar');
 
-/* Route::get('/login', [AuthController::class, 'ShowFormlogin']);
+// Rotas de Autenticação
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::middleware("auth")->group(function(){
-    Route::resource('produtos', ProdutoController::class);
-    Route::post('/logout', [AuthController::class, 'logout']);
+// Rotas protegidas
+Route::middleware(['auth'])->group(function () {
+    Route::get('/home', function () {
+        return view('home');
+    })->name('home');
+    
+    // Adicione aqui outras rotas que precisam de autenticação
 });
-*/
+
 Route::get('/Relatorios/Vendas', [RF_S01Controller::class, 'relatorioVendas'])->name('Relatorios.vendas');

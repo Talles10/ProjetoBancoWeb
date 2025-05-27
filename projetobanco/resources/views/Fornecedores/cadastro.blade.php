@@ -1,187 +1,116 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Fornecedores</title>
-</head>
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: Arial, sans-serif;
-    }
+@section('title', 'Cadastro de Fornecedores')
 
-    .container {
-        width: 350px;
-        margin: 50px auto;
-        padding: 20px;
-        border-radius: 10px;
-        background: #f4f4f4;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        text-align: center;
-    }
+@section('page-title', 'Cadastro de Fornecedores')
+@section('page-description', 'Gerencie o cadastro de fornecedores')
 
-    h2 {
-        margin-bottom: 20px;
-        color: #333;
-    }
-
-    .listar {
-        display: flex;
-        justify-content: center;
-    }
-
-    label {
-        display: block;
-        margin: 10px 0 5px;
-        font-weight: bold;
-        text-align: left;
-    }
-
-    input {
-        width: 100%;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
-
-    button {
-        margin-top: 15px;
-        width: 100%;
-        padding: 10px;
-        background: #007bff;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        transition: background 0.3s ease;
-    }
-
-    button:hover {
-        background: #0056b3;
-    }
-
-    table {
-
-        width: 80%;
-        border-collapse: collapse;
-        box-shadow: 0 4px 8px rgba(0, 0, 255, 0.2);
-        margin-left: 100px;
-        margin-bottom: 20px;
-    }
-
-    th,
-    td {
-        border: 1px solid #1e90ff;
-        padding: 10px;
-        text-align: center;
-    }
-
-    th {
-        background-color: #1e90ff;
-        color: white;
-    }
-
-    tr:nth-child(even) {
-        background-color: rgb(255, 255, 255);
-    }
-
-    tr:nth-child(odd) {
-        background-color: #333;
-    }
-    button.btn {
-            margin-top: 20px;
-            width: 310px;
-            margin-left: 1045px;
-            padding: 10px;
-            background: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background 0.3s ease;
-        }
-
-        button.btn:hover {
-            background: #0056b3;
-        }
-</style>
-<body>
-    <div class="container">
-        <h2>Cadastro de Fornecedor</h2>
-        @if($errors->any())
-        <div class="error-messages">
-            <ul>
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+@section('content')
+    <form action="{{ route('Fornecedores.salvar') }}" method="POST" class="form">
+        @csrf
+        <div class="form-group">
+            <label for="nome">Nome/Razão Social</label>
+            <input type="text" class="form-control" id="nome" name="nome" required>
         </div>
-        @endif
-        @if(session('success'))
-        <p class="success">{{ session('success') }}</p>
-        @endif
-        <form method="POST" action="{{ route('Fornecedores.salvar') }}">
-            @csrf
-            <label for="id">Código:</label>
-            <input type="text" id="id" name="id" required>
-            <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome" required>
-            <label for="documento">Documento(CPF/CNPJ):</label>
-            <input type="text" id="documento" name="documento" required>
-            <label for="endereco">Endereço(Bairro/Rua/Numero):</label>
-            <input type="text " id="endereco" name="endereco" required>
-            <label for="produtos_disponiveis">Produtos Disponíveis:</label>
-            <input type="text" id="produtos_disponiveis" name="produtos_disponiveis" required>
-            <label for="formas_pagamento">Formas de Pagamento:</label>
-            <input type="text" id="formas_pagamento" name="formas_pagamento" required>
-            <label for="telefone">Telefone:</label>
-            <input type="number" id="telefone" name="telefone" required>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-            <button type="submit">Cadastrar</button>
-        </form>
-    </div>
-    <h2 class="listar">Lista de fornecedores</h2>
-    <table action="{{ route('Fornecedores.cadastro') }}">
-        <tr>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>Documento (CPF/CNPJ)</th>
-            <th>endereco</th>
-            <th>Produtos Disponíveis</th>
-            <th>Formas de Pagamento</th>
-            <th>Gerenciar</th>
-        </tr>
-        @foreach ($Fornecedores as $fornecedor)
-        <tr>
-            <td>{{ $fornecedor->id }}</td>
-            <td>{{ $fornecedor->nome }}</td>
-            <td>{{ $fornecedor->documento }}</td>
-            <td>{{ $fornecedor->endereco }}</td>
-            <td>{{ $fornecedor->produtos_disponiveis }}</td>
-            <td>{{ $fornecedor->formas_pagamento }}</td>
-            <td>
-                <a href="{{ route('Fornecedores.editar', $fornecedor->id) }}">
-                    <button type="button">Editar</button>
-                </a>
-                <form action="{{ route('Fornecedores.excluir', $fornecedor->id) }}" method="POST" style="display:inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este fornecedor?')">Excluir</button>
-                </form>
-            </td>
-        </tr>
-        @endforeach
-    </table>
-    <a href="{{ route('home') }}"><button class="btn">
-        Voltar
-    </button></a>
-</body>
 
-</html>
+        <div class="form-group">
+            <label for="cnpj">CNPJ</label>
+            <input type="text" class="form-control" id="cnpj" name="cnpj" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">E-mail</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="telefone">Telefone</label>
+            <input type="tel" class="form-control" id="telefone" name="telefone" required>
+        </div>
+
+        <div class="form-group">
+            <label for="endereco">Endereço</label>
+            <input type="text" class="form-control" id="endereco" name="endereco" required>
+        </div>
+
+        <div class="form-group">
+            <label for="contato">Nome do Contato</label>
+            <input type="text" class="form-control" id="contato" name="contato" required>
+        </div>
+
+        <div style="display: flex; gap: 1rem;">
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-save"></i>
+                Salvar Fornecedor
+            </button>
+            
+            <a href="{{ route('home') }}" class="btn btn-primary">
+                <i class="fas fa-arrow-left"></i>
+                Voltar
+            </a>
+        </div>
+    </form>
+
+    @if(isset($fornecedores) && count($fornecedores) > 0)
+        <div class="table-responsive" style="margin-top: 2rem;">
+            <h3 style="margin-bottom: 1rem;">Fornecedores Cadastrados</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nome/Razão Social</th>
+                        <th>CNPJ</th>
+                        <th>E-mail</th>
+                        <th>Telefone</th>
+                        <th>Contato</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($fornecedores as $fornecedor)
+                        <tr>
+                            <td>{{ $fornecedor->nome }}</td>
+                            <td>{{ $fornecedor->cnpj }}</td>
+                            <td>{{ $fornecedor->email }}</td>
+                            <td>{{ $fornecedor->telefone }}</td>
+                            <td>{{ $fornecedor->contato }}</td>
+                            <td style="display: flex; gap: 0.5rem;">
+                                <a href="{{ route('Fornecedores.editar', $fornecedor->id) }}" class="btn btn-primary">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form action="{{ route('Fornecedores.excluir', $fornecedor->id) }}" method="POST" style="display: inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja excluir este fornecedor?')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    @endif
+@endsection
+
+@section('scripts')
+<script>
+    // Máscara para CNPJ
+    document.getElementById('cnpj').addEventListener('input', function (e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length <= 14) {
+            value = value.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
+            e.target.value = value;
+        }
+    });
+
+    // Máscara para telefone
+    document.getElementById('telefone').addEventListener('input', function (e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length <= 11) {
+            value = value.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+            e.target.value = value;
+        }
+    });
+</script>
+@endsection

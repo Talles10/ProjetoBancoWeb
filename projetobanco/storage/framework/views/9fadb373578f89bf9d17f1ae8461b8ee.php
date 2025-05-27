@@ -1,204 +1,93 @@
-<!DOCTYPE html>
-<html lang="pt-br">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Produto</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
 
-        .container {
-            width: 350px;
-            margin: 50px auto;
-            padding: 20px;
-            border-radius: 10px;
-            background: #f4f4f4;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
+<?php $__env->startSection('title', 'Cadastro de Produtos'); ?>
 
-        h2 {
-            margin-bottom: 20px;
-            color: #333;
-        }
+<?php $__env->startSection('page-title', 'Cadastro de Produtos'); ?>
+<?php $__env->startSection('page-description', 'Adicione novos produtos ao catálogo'); ?>
 
-        .listar {
-            display: flex;
-            justify-content: center;
-            margin-top: 30px;
-        }
-
-        label {
-            display: block;
-            margin: 10px 0 5px;
-            font-weight: bold;
-            text-align: left;
-        }
-
-        input,
-        select {
-            position: relative;
-            /* Torna o z-index funcional */
-            z-index: 10;
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-
-        button {
-            margin-top: 20px;
-            width: 100%;
-            padding: 10px;
-            background: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background 0.3s ease;
-        }
-
-        button:hover {
-            background: #0056b3;
-        }
-
-        table {
-            width: 80%;
-            border-collapse: collapse;
-            box-shadow: 0 4px 8px rgba(0, 0, 255, 0.2);
-            margin-left: 100px;
-            margin-bottom: 20px;
-        }
-
-        th,
-        td {
-            border: 1px solid #1e90ff;
-            padding: 10px;
-            text-align: center;
-        }
-
-        th {
-            background-color: #1e90ff;
-            color: white;
-        }
-
-        tr:nth-child(even) {
-            background-color: rgb(255, 255, 255);
-        }
-
-        tr:nth-child(odd) {
-            background-color: #f2f2f2;
-        }
-
-        .error-messages ul {
-            color: red;
-            list-style-type: none;
-        }
-
-        .success {
-            color: green;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="container">
-        <h2>Cadastro de Produto</h2>
-        <!-- Exibição de erros -->
-        <?php if($errors->any()): ?>
-        <div class="error-messages">
-            <ul>
-                <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <li><?php echo e($error); ?></li>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            </ul>
+<?php $__env->startSection('content'); ?>
+    <form action="<?php echo e(route('Produtos.salvar')); ?>" method="POST" class="form">
+        <?php echo csrf_field(); ?>
+        <div class="form-group">
+            <label for="nome">Nome do Produto</label>
+            <input type="text" class="form-control" id="nome" name="nome" required>
         </div>
-        <?php endif; ?>
 
-        <!-- Exibição de sucesso -->
-        <?php if(session('success')): ?>
-        <p class="success"><?php echo e(session('success')); ?></p>
-        <?php endif; ?>
+        <div class="form-group">
+            <label for="descricao">Descrição</label>
+            <textarea class="form-control" id="descricao" name="descricao" rows="3"></textarea>
+        </div>
 
-        <form method="POST" action="<?php echo e(route('Produtos.salvar')); ?>">
-            <?php echo csrf_field(); ?>
+        <div class="form-group">
+            <label for="preco">Preço</label>
+            <input type="number" class="form-control" id="preco" name="preco" step="0.01" required>
+        </div>
 
-            <label for="id">Código:</label>
-            <input type="text" id="id" name="id" required>
+        <div class="form-group">
+            <label for="quantidade">Quantidade em Estoque</label>
+            <input type="number" class="form-control" id="quantidade" name="quantidade" required>
+        </div>
 
-            <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome" required>
-
-            <label for="marca">Marca:</label>
-            <input type="text" id="marca" name="marca" required>
-
-            <label for="preco">Preço:</label>
-            <input type="number" id="preco" name="preco" step="0.01" required>
-
-            <label for="quantidade">Quantidade:</label>
-            <input type="number" id="quantidade" name="quantidade" required>
-
-            <label for="categoria_id">Categoria:</label>
-            <select name="categoria_id" id="categoria_id" required>
-                <option value="">Selecione uma Categoria</option>
-                <?php $__currentLoopData = $categorias; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $categoria): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <option value="<?php echo e($categoria->id); ?>"
-                    <?php echo e(isset($categoriaSelecionada) && $categoriaSelecionada->id == $categoria->id ? 'selected' : ''); ?>>
-                    <?php echo e($categoria->nome); ?>
-
-                </option>
+        <div class="form-group">
+            <label for="fornecedor">Fornecedor</label>
+            <select class="form-control" id="fornecedor" name="fornecedor_id" required>
+                <option value="">Selecione um fornecedor</option>
+                <?php $__currentLoopData = $fornecedores; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $fornecedor): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <option value="<?php echo e($fornecedor->id); ?>"><?php echo e($fornecedor->nome); ?></option>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </select>
+        </div>
 
+        <div style="display: flex; gap: 1rem;">
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-save"></i>
+                Salvar Produto
+            </button>
+            
+            <a href="<?php echo e(route('home')); ?>" class="btn btn-primary">
+                <i class="fas fa-arrow-left"></i>
+                Voltar
+            </a>
+        </div>
+    </form>
 
-
-            <button type="submit">Cadastrar</button>
-        </form>
-    </div>
-
-    <h2 class="listar">Lista de Produtos</h2>
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>Marca</th>
-            <th>Preço</th>
-            <th>Quantidade</th>
-            <th>Categoria</th>
-            <th>Ações</th>
-        </tr>
-
-        <?php $__currentLoopData = $Produtos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $produto): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-        <tr>
-            <td><?php echo e($produto->id); ?></td>
-            <td><?php echo e($produto->nome); ?></td>
-            <td><?php echo e($produto->marca); ?></td>
-            <td>R$ <?php echo e(number_format($produto->preco, 2, ',', '.')); ?></td>
-            <td><?php echo e($produto->quantidade); ?></td>
-            <td><?php echo e($produto->categoria->nome); ?></td>
-            <td>
-                <a href="<?php echo e(route('Produtos.editar', $produto->id)); ?>">
-                    <button type="button">Editar</button>
-                </a>
-
-                <form action="<?php echo e(route('Produtos.excluir', $produto->id)); ?>" method="POST" style="display:inline;">
-                    <?php echo csrf_field(); ?>
-                    <?php echo method_field('DELETE'); ?>
-                    <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este produto?')">Excluir</button>
-                </form>
-            </td>
-
-        </tr>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-    </table>
-</body>
-
-</html><?php /**PATH C:\Users\Aluno\Documents\GitHub\ProjetoBancoWeb\projetobanco\resources\views/Produtos/cadastro.blade.php ENDPATH**/ ?>
+    <?php if(isset($produtos) && count($produtos) > 0): ?>
+        <div class="table-responsive" style="margin-top: 2rem;">
+            <h3 style="margin-bottom: 1rem;">Produtos Cadastrados</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Preço</th>
+                        <th>Quantidade</th>
+                        <th>Fornecedor</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php $__currentLoopData = $produtos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $produto): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <tr>
+                            <td><?php echo e($produto->nome); ?></td>
+                            <td>R$ <?php echo e(number_format($produto->preco, 2, ',', '.')); ?></td>
+                            <td><?php echo e($produto->quantidade); ?></td>
+                            <td><?php echo e($produto->fornecedor->nome); ?></td>
+                            <td style="display: flex; gap: 0.5rem;">
+                                <a href="<?php echo e(route('Produtos.editar', $produto->id)); ?>" class="btn btn-primary">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form action="<?php echo e(route('Produtos.excluir', $produto->id)); ?>" method="POST" style="display: inline;">
+                                    <?php echo csrf_field(); ?>
+                                    <?php echo method_field('DELETE'); ?>
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja excluir este produto?')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </tbody>
+            </table>
+        </div>
+    <?php endif; ?>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\Aluno\Documents\GitHub\ProjetoBancoWeb\projetobanco\resources\views/Produtos/cadastro.blade.php ENDPATH**/ ?>
