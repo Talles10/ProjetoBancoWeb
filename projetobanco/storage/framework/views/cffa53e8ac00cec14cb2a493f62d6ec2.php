@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro - Perfumes da Chiquinha</title>
+    <title>Login - Perfumes da Chiquinha</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -27,7 +27,7 @@
             padding: 20px;
         }
 
-        .register-container {
+        .login-container {
             background: white;
             padding: 40px;
             border-radius: 15px;
@@ -36,12 +36,12 @@
             max-width: 400px;
         }
 
-        .register-header {
+        .login-header {
             text-align: center;
             margin-bottom: 30px;
         }
 
-        .register-header h1 {
+        .login-header h1 {
             color: var(--primary-color);
             font-size: 2rem;
             margin-bottom: 10px;
@@ -78,7 +78,7 @@
             margin-top: 5px;
         }
 
-        .btn-register {
+        .btn-login {
             width: 100%;
             padding: 12px;
             background: var(--secondary-color);
@@ -91,53 +91,38 @@
             transition: background-color 0.3s ease;
         }
 
-        .btn-register:hover {
+        .btn-login:hover {
             background: #2980b9;
         }
 
-        .login-link {
+        .register-link {
             text-align: center;
             margin-top: 20px;
         }
 
-        .login-link a {
+        .register-link a {
             color: var(--secondary-color);
             text-decoration: none;
             font-weight: 600;
         }
 
-        .login-link a:hover {
+        .register-link a:hover {
             text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <div class="register-container">
-        <div class="register-header">
+    <div class="login-container">
+        <div class="login-header">
             <h1>Perfumes da Chiquinha</h1>
-            <p>Crie sua conta</p>
+            <p>Faça login para continuar</p>
         </div>
 
-        <form method="POST" action="<?php echo e(route('register')); ?>">
+        <form method="POST" action="<?php echo e(route('login')); ?>">
             <?php echo csrf_field(); ?>
             <div class="form-group">
-                <label for="name">Nome</label>
-                <input type="text" id="name" name="name" value="<?php echo e(old('name')); ?>" required autofocus>
-                <?php $__errorArgs = ['name'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                    <div class="error-message"><?php echo e($message); ?></div>
-                <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-            </div>
-
-            <div class="form-group">
                 <label for="email">E-mail</label>
-                <input type="email" id="email" name="email" value="<?php echo e(old('email')); ?>" required>
+                <input type="email" id="email" name="email" value="<?php echo e(old('email')); ?>" required autofocus>
                 <?php $__errorArgs = ['email'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -165,17 +150,12 @@ endif;
 unset($__errorArgs, $__bag); ?>
             </div>
 
-            <div class="form-group">
-                <label for="password_confirmation">Confirme a Senha</label>
-                <input type="password" id="password_confirmation" name="password_confirmation" required>
-            </div>
-
-            <button type="submit" class="btn-register">Registrar</button>
+            <button type="submit" class="btn-login">Entrar</button>
         </form>
 
-        <div class="login-link">
-            <p>Já tem uma conta? <a href="<?php echo e(route('login')); ?>">Faça login</a></p>
+        <div class="register-link">
+            <p>Não tem uma conta? <a href="<?php echo e(route('register')); ?>">Registre-se</a></p>
         </div>
     </div>
 </body>
-</html> <?php /**PATH C:\Users\Aluno\Documents\GitHub\ProjetoBancoWeb\projetobanco\resources\views/auth/register.blade.php ENDPATH**/ ?>
+</html> <?php /**PATH C:\Users\User\Documents\GitHub\ProjetoBancoWeb\projetobanco\resources\views/auth/login.blade.php ENDPATH**/ ?>

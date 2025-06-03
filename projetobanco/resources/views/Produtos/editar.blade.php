@@ -1,141 +1,67 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Produto</title>
-</head>
-<style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+@extends('layouts.app')
 
-        .container {
-            width: 350px;
-            margin: 50px auto;
-            padding: 20px;
-            border-radius: 10px;
-            background: #f4f4f4;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
+@section('title', 'Editar Produto')
 
-        h2 {
-            margin-bottom: 20px;
-            color: #333;
-        }
+@section('page-title', 'Editar Produto')
+@section('page-description', 'Atualize as informações do produto')
 
-        .listar {
-            display: flex;
-            justify-content: center;
-            margin-top: 30px;
-        }
+@section('content')
+    <form action="{{ route('Produtos.atualizar', $produto->id) }}" method="POST" class="form">
+        @csrf
+        @method('PUT')
+        
+        <div class="form-group">
+            <label for="nome">Nome do Produto</label>
+            <input type="text" class="form-control" id="nome" name="nome" value="{{ $produto->nome }}" required>
+        </div>
 
-        label {
-            display: block;
-            margin: 10px 0 5px;
-            font-weight: bold;
-            text-align: left;
-        }
+        <div class="form-group">
+            <label for="descricao">Descrição</label>
+            <textarea class="form-control" id="descricao" name="descricao" rows="3">{{ $produto->descricao }}</textarea>
+        </div>
 
-        input,
-        select {
-            position: relative;
-            /* Torna o z-index funcional */
-            z-index: 10;
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
+        <div class="form-group">
+            <label for="preco">Preço</label>
+            <input type="number" class="form-control" id="preco" name="preco" step="0.01" value="{{ $produto->preco }}" required>
+        </div>
 
-        button {
-            margin-top: 20px;
-            width: 100%;
-            padding: 10px;
-            background: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background 0.3s ease;
-        }
+        <div class="form-group">
+            <label for="quantidade">Quantidade em Estoque</label>
+            <input type="number" class="form-control" id="quantidade" name="quantidade" value="{{ $produto->quantidade }}" required>
+        </div>
 
-        button:hover {
-            background: #0056b3;
-        }
+        <div class="form-group">
+            <label for="fornecedor_id">Fornecedor</label>
+            <select class="form-control" id="fornecedor_id" name="fornecedor_id" required>
+                <option value="">Selecione um fornecedor</option>
+                @foreach($fornecedores as $fornecedor)
+                    <option value="{{ $fornecedor->id }}" {{ $produto->fornecedor_id == $fornecedor->id ? 'selected' : '' }}>
+                        {{ $fornecedor->nome }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
 
-        table {
-            width: 80%;
-            border-collapse: collapse;
-            box-shadow: 0 4px 8px rgba(0, 0, 255, 0.2);
-            margin-left: 100px;
-            margin-bottom: 20px;
-        }
+        @if($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-        th,
-        td {
-            border: 1px solid #1e90ff;
-            padding: 10px;
-            text-align: center;
-        }
-
-        th {
-            background-color: #1e90ff;
-            color: white;
-        }
-
-        tr:nth-child(even) {
-            background-color: rgb(255, 255, 255);
-        }
-
-        tr:nth-child(odd) {
-            background-color: #f2f2f2;
-        }
-
-        .error-messages ul {
-            color: red;
-            list-style-type: none;
-        }
-
-        .success {
-            color: green;
-        }
-    </style> 
-<body>
-    <h2>Editar Produto</h2>
-
-    <form method="POST" action="{{ route('Produtos.atualizar', $produto->id) }}">
-    @csrf
-    <label for="nome">Nome:</label>
-    <input type="text" id="nome" name="nome" value="{{ $produto->nome }}" required>
-
-    <label for="marca">Marca:</label>
-    <input type="text" id="marca" name="marca" value="{{ $produto->marca }}" required>
-
-    <label for="preco">Preço:</label>
-    <input type="number" id="preco" name="preco" step="0.01" value="{{ $produto->preco }}" required>
-
-    <label for="quantidade">Quantidade:</label>
-    <input type="number" id="quantidade" name="quantidade" value="{{ $produto->quantidade }}" required>
-
-    <label for="categoria_id">Categoria:</label>
-    <select name="categoria_id" id="categoria_id" required>
-        @foreach($categorias as $categoria)
-            <option value="{{ $categoria->id }}" 
-                {{ $produto->categoria_id == $categoria->id ? 'selected' : '' }}>
-                {{ $categoria->nome }}
-            </option>
-        @endforeach
-    </select>
-
-    <button type="submit">Atualizar</button>
-</form>
-
-</body>
-</html>
+        <div style="display: flex; gap: 1rem;">
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-save"></i>
+                Atualizar Produto
+            </button>
+            
+            <a href="{{ route('Produtos.cadastro') }}" class="btn btn-primary">
+                <i class="fas fa-arrow-left"></i>
+                Voltar
+            </a>
+        </div>
+    </form>
+@endsection

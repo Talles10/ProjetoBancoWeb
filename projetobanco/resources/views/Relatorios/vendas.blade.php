@@ -1,94 +1,136 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+@extends('layouts.financeiro')
 
-<head>
-    <meta charset="UTF-8">
-    <title>Relatório de Vendas</title>
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <style>
-        body {
-            background-color: #f0f8ff;
-            font-family: Arial, sans-serif;
-            padding: 20px;
-        }
+@section('title', 'Relatório de Vendas')
 
-        .container {
-            background-color: #ffffff;
-            border-radius: 10px;
-            padding: 30px;
-            max-width: 900px;
-            margin: auto;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+@section('content')
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Vendas Realizadas</h4>
+                <div>
+                    <button class="btn btn-outline-primary me-2" onclick="exportarPDF()">
+                        <i class="fas fa-file-pdf me-2"></i>Exportar PDF
+                    </button>
+                    <button class="btn btn-outline-success" onclick="exportarExcel()">
+                        <i class="fas fa-file-excel me-2"></i>Exportar Excel
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Produto</th>
+                                <th>Quantidade</th>
+                                <th>Valor Unitário</th>
+                                <th>Valor Total</th>
+                                <th>Data</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($vendas as $venda)
+                            <tr>
+                                <td>{{ $venda->id }}</td>
+                                <td>{{ $venda->produto->nome }}</td>
+                                <td>{{ $venda->quantidade }}</td>
+                                <td>R$ {{ number_format($venda->produto->preco, 2, ',', '.') }}</td>
+                                <td>R$ {{ number_format($venda->preco_total, 2, ',', '.') }}</td>
+                                <td>{{ \Carbon\Carbon::parse($venda->data_venda)->format('d/m/Y H:i') }}</td>
+                                <td>
+                                    <span class="badge bg-success">Concluída</span>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                        <tfoot>
+                            <tr class="table-primary">
+                                <td colspan="4" class="text-end"><strong>Total Geral:</strong></td>
+                                <td colspan="3">
+                                    <strong>R$ {{ number_format($vendas->sum('preco_total'), 2, ',', '.') }}</strong>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
 
-        h1 {
-            color: #333;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 30px;
-        }
-
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: center;
-        }
-
-        th {
-            background-color: #007BFF;
-            color: white;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .btn:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Relatório de Vendas</h1>
-        <table>
-            <thead>
-                <tr>
-                    <th>Produto</th>
-                    <th>Valor</th>
-                    <th>Data</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($vendas as $venda)
-                <tr>
-                    <td>{{ $venda->produto->nome }}</td>
-                    <td>R$ {{ number_format($venda->preco_total, 2, ',', '.') }}</td>
-                    <td>{{ \Carbon\Carbon::parse($venda->data_venda)->format('d/m/Y') }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-        <a href="{{ route('home') }}">
-            <button class="btn">Voltar à Home</button>
-        </a>
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Resumo do Período</h5>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Total de Vendas
+                                        <span class="badge bg-primary rounded-pill">{{ $vendas->count() }}</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Média por Venda
+                                        <span>R$ {{ number_format($vendas->avg('preco_total'), 2, ',', '.') }}</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Maior Venda
+                                        <span>R$ {{ number_format($vendas->max('preco_total'), 2, ',', '.') }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Filtros</h5>
+                                <form action="{{ route('Relatorios.vendas') }}" method="GET">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label for="data_inicio" class="form-label">Data Início</label>
+                                            <input type="date" class="form-control" id="data_inicio" name="data_inicio">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="data_fim" class="form-label">Data Fim</label>
+                                            <input type="date" class="form-control" id="data_fim" name="data_fim">
+                                        </div>
+                                        <div class="col-12">
+                                            <button type="submit" class="btn btn-primary w-100">
+                                                <i class="fas fa-filter me-2"></i>Filtrar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</body>
-</html>
+</div>
+@endsection
+
+@section('scripts')
+<script>
+function exportarPDF() {
+    // Implementar exportação para PDF
+    alert('Funcionalidade de exportação para PDF em desenvolvimento');
+}
+
+function exportarExcel() {
+    // Implementar exportação para Excel
+    alert('Funcionalidade de exportação para Excel em desenvolvimento');
+}
+
+$(document).ready(function() {
+    // Inicializar DataTables se necessário
+    if ($.fn.DataTable) {
+        $('.table').DataTable({
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese-Brasil.json'
+            }
+        });
+    }
+});
+</script>
+@endsection

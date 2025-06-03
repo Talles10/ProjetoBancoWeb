@@ -6,26 +6,44 @@
 @section('page-description', 'Gerencie o cadastro de funcionários')
 
 @section('content')
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <form action="{{ route('Funcionarios.salvar') }}" method="POST" class="form">
         @csrf
         <div class="form-group">
             <label for="nome">Nome Completo</label>
-            <input type="text" class="form-control" id="nome" name="nome" required>
+            <input type="text" class="form-control" id="nome" name="nome" value="{{ old('nome') }}" maxlength="100" required>
         </div>
 
         <div class="form-group">
-            <label for="cpf">CPF</label>
-            <input type="text" class="form-control" id="cpf" name="cpf" required>
+            <label for="documento">CPF/CNPJ</label>
+            <input type="text" class="form-control" id="documento" name="documento" value="{{ old('documento') }}" maxlength="18" required>
+            <small class="form-text text-muted">Digite apenas números (11 dígitos para CPF ou 14 para CNPJ)</small>
         </div>
 
         <div class="form-group">
             <label for="email">E-mail</label>
-            <input type="email" class="form-control" id="email" name="email" required>
+            <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" maxlength="100" required>
         </div>
 
         <div class="form-group">
             <label for="telefone">Telefone</label>
-            <input type="tel" class="form-control" id="telefone" name="telefone" required>
+            <input type="tel" class="form-control" id="telefone" name="telefone" value="{{ old('telefone') }}" maxlength="15" required>
+            <small class="form-text text-muted">Digite apenas números (DDD + número)</small>
         </div>
 
         <div class="form-group">
@@ -35,12 +53,18 @@
 
         <div class="form-group">
             <label for="cargo">Cargo</label>
-            <input type="text" class="form-control" id="cargo" name="cargo" required>
+            <input type="text" class="form-control" id="cargo" name="cargo" value="{{ old('cargo') }}" maxlength="50" required>
         </div>
 
         <div class="form-group">
             <label for="salario">Salário</label>
-            <input type="number" class="form-control" id="salario" name="salario" step="0.01" required>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">R$</span>
+                </div>
+                <input type="text" class="form-control" id="salario" name="salario" value="{{ old('salario') }}" required>
+            </div>
+            <small class="form-text text-muted">Digite o valor sem pontos, usando vírgula para decimais (ex: 1234,56)</small>
         </div>
 
         <div class="form-group">
@@ -68,10 +92,11 @@
                 <thead>
                     <tr>
                         <th>Nome</th>
-                        <th>CPF</th>
-                        <th>Cargo</th>
-                        <th>Data Admissão</th>
+                        <th>CPF/CNPJ</th>
+                        <th>E-mail</th>
                         <th>Telefone</th>
+                        <th>Cargo</th>
+                        <th>Salário</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -79,10 +104,11 @@
                     @foreach($funcionarios as $funcionario)
                         <tr>
                             <td>{{ $funcionario->nome }}</td>
-                            <td>{{ $funcionario->cpf }}</td>
+                            <td>{{ formatarDocumento($funcionario->documento) }}</td>
+                            <td>{{ $funcionario->email }}</td>
+                            <td>{{ formatarTelefone($funcionario->telefone) }}</td>
                             <td>{{ $funcionario->cargo }}</td>
-                            <td>{{ date('d/m/Y', strtotime($funcionario->data_admissao)) }}</td>
-                            <td>{{ $funcionario->telefone }}</td>
+                            <td>R$ {{ number_format($funcionario->salario, 2, ',', '.') }}</td>
                             <td style="display: flex; gap: 0.5rem;">
                                 <a href="{{ route('Funcionarios.editar', $funcionario->id) }}" class="btn btn-primary">
                                     <i class="fas fa-edit"></i>
@@ -105,31 +131,67 @@
 
 @section('scripts')
 <script>
-    // Máscara para CPF
-    document.getElementById('cpf').addEventListener('input', function (e) {
+    // Máscara para CPF/CNPJ
+    document.getElementById('documento').addEventListener('input', function (e) {
         let value = e.target.value.replace(/\D/g, '');
         if (value.length <= 11) {
-            value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
-            e.target.value = value;
+            // CPF
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+        } else {
+            // CNPJ
+            value = value.replace(/^(\d{2})(\d)/, '$1.$2');
+            value = value.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
+            value = value.replace(/\.(\d{3})(\d)/, '.$1/$2');
+            value = value.replace(/(\d{4})(\d)/, '$1-$2');
         }
+        e.target.value = value;
     });
 
     // Máscara para telefone
     document.getElementById('telefone').addEventListener('input', function (e) {
         let value = e.target.value.replace(/\D/g, '');
         if (value.length <= 11) {
-            value = value.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+            if (value.length === 11) {
+                // Celular
+                value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+            } else {
+                // Telefone fixo
+                value = value.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+            }
             e.target.value = value;
         }
     });
 
     // Formatação do salário
     document.getElementById('salario').addEventListener('input', function (e) {
-        let value = e.target.value;
+        let value = e.target.value.replace(/\D/g, '');
         if (value.length > 0) {
-            value = parseFloat(value).toFixed(2);
+            value = (parseFloat(value) / 100).toFixed(2);
+            value = value.replace('.', ',');
             e.target.value = value;
         }
     });
 </script>
 @endsection
+
+@php
+function formatarDocumento($documento) {
+    $doc = preg_replace('/[^0-9]/', '', $documento);
+    if (strlen($doc) === 11) {
+        return substr($doc, 0, 3) . '.' . substr($doc, 3, 3) . '.' . substr($doc, 6, 3) . '-' . substr($doc, 9);
+    } else {
+        return substr($doc, 0, 2) . '.' . substr($doc, 2, 3) . '.' . substr($doc, 5, 3) . '/' . substr($doc, 8, 4) . '-' . substr($doc, 12);
+    }
+}
+
+function formatarTelefone($telefone) {
+    $tel = preg_replace('/[^0-9]/', '', $telefone);
+    if (strlen($tel) === 11) {
+        return '(' . substr($tel, 0, 2) . ') ' . substr($tel, 2, 5) . '-' . substr($tel, 7);
+    } else {
+        return '(' . substr($tel, 0, 2) . ') ' . substr($tel, 2, 4) . '-' . substr($tel, 6);
+    }
+}
+@endphp

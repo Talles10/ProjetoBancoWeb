@@ -13,11 +13,12 @@ class Fornecedor extends Model
 
     protected $fillable = [
         'nome',
-        'cnpj',
+        'documento',
         'email',
         'telefone',
         'endereco',
-        'contato'
+        'produtos_disponiveis',
+        'formas_pagamento'
     ];
 
     public function produtos()

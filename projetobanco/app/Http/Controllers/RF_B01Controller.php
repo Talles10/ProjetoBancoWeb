@@ -23,7 +23,6 @@ class RF_B01Controller extends Controller
     public function SalvarProduto(Request $request)
     {
         $request->validate([
-            'id' => 'required|unique:Produtos',
             'nome' => 'required',
             'marca' => 'required',
             'preco' => 'required|numeric|min:0',
@@ -48,7 +47,7 @@ class RF_B01Controller extends Controller
     public function EditarProduto($id)
     {
         $produto = Produto::findOrFail($id);
-        $categorias = Categoria::all(); 
+        $categorias = Categoria::all();
 
         return view('Produtos.editar', compact('produto', 'categorias'));
     }

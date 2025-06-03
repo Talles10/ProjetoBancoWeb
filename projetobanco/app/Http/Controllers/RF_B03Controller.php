@@ -10,54 +10,88 @@ class RF_B03Controller extends Controller
 {
     public function CadastrarFuncionario()
     {
-        $Funcionarios = Funcionario::all();
-        return view('Funcionarios.cadastro', compact('Funcionarios'));
+        $funcionarios = Funcionario::all();
+        return view('Funcionarios.cadastro', compact('funcionarios'));
     }
+
     public function SalvarFuncionario(Request $request)
     {
-        $request->validate([
-            'id' => 'required|unique:Funcionarios',
-            'nome' => 'required',
-            'documento' => 'required|unique:Funcionarios,documento',
-            'salario' => 'required|numeric|min:0',
-            'cargo' => 'required|string|min:3',
-            'email' => 'required|email|unique:Funcionarios,email',
+        // Limpa a máscara do documento
+        $documento = preg_replace('/[^0-9]/', '', $request->documento);
+        
+        // Converte o salário para formato correto
+        $salario = str_replace(['R$', ' ', '.'], '', $request->salario);
+        $salario = str_replace(',', '.', $salario);
+        
+        $request->merge([
+            'documento' => $documento,
+            'salario' => $salario
         ]);
 
-        $funcionario = new Funcionario();
-        $funcionario->id = $request->id;
-        $funcionario->nome = $request->nome;
-        $funcionario->documento = $request->documento;
-        $funcionario->salario = $request->salario;
-        $funcionario->cargo = $request->cargo;
-        $funcionario->email = $request->email;
-        $funcionario->save();
+        $request->validate([
+            'nome' => 'required|string|max:100',
+            'documento' => ['required', 'regex:/^(\d{11}|\d{14})$/', 'unique:funcionarios'],
+            'salario' => 'required|numeric|min:0|decimal:0,2',
+            'cargo' => 'required|string|min:3|max:50',
+            'email' => 'required|email|unique:funcionarios'
+        ], [
+            'documento.regex' => 'O CPF deve ter 11 dígitos ou CNPJ deve ter 14 dígitos.',
+            'salario.decimal' => 'O salário deve ter no máximo 2 casas decimais.',
+            'salario.min' => 'O salário não pode ser negativo.'
+        ]);
+
+        $funcionario = Funcionario::create([
+            'nome' => $request->nome,
+            'documento' => $documento,
+            'salario' => $salario,
+            'cargo' => $request->cargo,
+            'email' => $request->email
+        ]);
+
         return redirect()->route('Funcionarios.cadastro')->with('success', 'Funcionário cadastrado com sucesso!');
     }
 
     public function ListarFuncionario()
     {
-        $Funcionarios = Funcionario::all();
-        return view('Funcionarios.cadastro', ['Funcionarios' => $Funcionarios]);
+        $funcionarios = Funcionario::all();
+        return view('Funcionarios.cadastro', compact('funcionarios'));
     }
+
     public function AtualizarFuncionario(Request $request, $id)
     {
+        // Limpa a máscara do documento
+        $documento = preg_replace('/[^0-9]/', '', $request->documento);
+        
+        // Converte o salário para formato correto
+        $salario = str_replace(['R$', ' ', '.'], '', $request->salario);
+        $salario = str_replace(',', '.', $salario);
+        
+        $request->merge([
+            'documento' => $documento,
+            'salario' => $salario
+        ]);
+
         $request->validate([
-            'nome' => 'required',
-            'documento' => 'required|unique:Funcionarios,documento,' . $id,
-            'salario' => 'required|numeric|min:0',
-            'cargo' => 'required|string|min:3',
-            'email' => 'required|email|unique:Funcionarios,email,' . $id,
+            'nome' => 'required|string|max:100',
+            'documento' => ['required', 'regex:/^(\d{11}|\d{14})$/', 'unique:funcionarios,documento,'.$id],
+            'salario' => 'required|numeric|min:0|decimal:0,2',
+            'cargo' => 'required|string|min:3|max:50',
+            'email' => 'required|email|unique:funcionarios,email,'.$id
+        ], [
+            'documento.regex' => 'O CPF deve ter 11 dígitos ou CNPJ deve ter 14 dígitos.',
+            'salario.decimal' => 'O salário deve ter no máximo 2 casas decimais.',
+            'salario.min' => 'O salário não pode ser negativo.'
         ]);
 
         $funcionario = Funcionario::findOrFail($id);
         $funcionario->update([
             'nome' => $request->nome,
-            'documento' => $request->documento,
-            'salario' => $request->salario,
+            'documento' => $documento,
+            'salario' => $salario,
             'cargo' => $request->cargo,
-            'email' => $request->email,
+            'email' => $request->email
         ]);
+
         return redirect()->route('Funcionarios.cadastro')->with('success', 'Funcionário atualizado com sucesso!');
     }
 }

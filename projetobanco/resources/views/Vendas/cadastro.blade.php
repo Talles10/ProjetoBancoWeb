@@ -1,146 +1,94 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>Cadastro de Venda</title>
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <style>
-        body {
-            background-color: #f0f8ff;
-            font-family: Arial, sans-serif;
-            padding: 30px;
-        }
+@extends('layouts.financeiro')
 
-        h1, h2 {
-            text-align: center;
-        }
+@section('title', 'Realizar Venda')
 
-        .formulario-container {
-            background-color: #ffffff;
-            border-radius: 10px;
-            padding: 30px;
-            margin: 0 auto;
-            max-width: 600px;
-            box-shadow: 0px 0px 10px #ccc;
-        }
-
-        .produto-selecionado {
-            margin-top: 20px;
-            background-color: #eef6ff;
-            padding: 20px;
-            border-radius: 10px;
-        }
-
-        .imagem-decorativa {
-            width: 150px;
-            height: 150px;
-            background-color: #dcdcdc;
-            margin: 10px auto;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #666;
-            font-style: italic;
-        }
-
-        form {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        input[type="number"] {
-            padding: 8px;
-            width: 100%;
-            max-width: 200px;
-            margin: 10px auto;
-            display: block;
-        }
-
-        button {
-            padding: 10px 20px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        .erro {
-            background-color: #ffdddd;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-left: 5px solid red;
-            color: red;
-        }
-
-        .sucesso {
-            background-color: #ddffdd;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-left: 5px solid green;
-            color: green;
-        }
-
-        .btn-voltar {
-            margin-top: 20px;
-        }
-    </style>
-</head>
-<body>
-    <div class="formulario-container">
-        <h1>Realizar Venda</h1>
-        @if ($errors->any())
-            <div class="erro">
-                @foreach ($errors->all() as $erro)
-                    <p>{{ $erro }}</p>
-                @endforeach
+@section('content')
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">Buscar Produto</h4>
             </div>
-        @endif
-        @if (session('success'))
-            <div class="sucesso">
-                {{ session('success') }}
-            </div>
-        @endif
-        <form method="POST" action="{{ route('Vendas.buscar') }}">
-            @csrf
-            <label for="produto_id">Digite o ID do Produto:</label>
-            <input type="number" name="produto_id" id="produto_id" required>
-            <button type="submit">Buscar Produto</button>
-        </form>
-        @if ($produtoSelecionado)
-            <div class="produto-selecionado">
-                <h3>{{ $produtoSelecionado->nome }}</h3>
-                <p>Marca: {{ $produtoSelecionado->marca }}</p>
-                <p>Preço: R$ {{ number_format($produtoSelecionado->preco, 2, ',', '.') }}</p>
-                <p>Estoque disponível: {{ $produtoSelecionado->quantidade }}</p>
-                <div class="imagem-decorativa">
-                    Foto Produto
-                </div>
-                <form method="POST" action="{{ route('Vendas.salvar') }}">
+            <div class="card-body">
+                <form method="POST" action="{{ route('Vendas.buscar') }}" class="mb-4">
                     @csrf
-                    <input type="hidden" name="produto_id" value="{{ $produtoSelecionado->id }}">
-                    <label for="quantidade">Quantidade a vender:</label>
-                    <input type="number" name="quantidade" id="quantidade" required min="1" max="{{ $produtoSelecionado->quantidade }}">
-                    <button type="submit">Confirmar Venda</button>
+                    <div class="row align-items-end">
+                        <div class="col-md-8">
+                            <label for="produto_id" class="form-label">ID do Produto</label>
+                            <input type="number" name="produto_id" id="produto_id" class="form-control" required>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fas fa-search me-2"></i>Buscar
+                            </button>
+                        </div>
+                    </div>
                 </form>
+
+                @if ($produtoSelecionado)
+                    <div class="card">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">Produto Encontrado</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 text-center">
+                                    <div class="rounded-circle bg-light d-flex align-items-center justify-content-center mx-auto" style="width: 150px; height: 150px">
+                                        <i class="fas fa-box fa-3x text-primary"></i>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <h4>{{ $produtoSelecionado->nome }}</h4>
+                                    <p class="mb-2"><strong>Marca:</strong> {{ $produtoSelecionado->marca }}</p>
+                                    <p class="mb-2"><strong>Preço:</strong> R$ {{ number_format($produtoSelecionado->preco, 2, ',', '.') }}</p>
+                                    <p class="mb-3"><strong>Estoque disponível:</strong> 
+                                        <span class="badge bg-info">{{ $produtoSelecionado->quantidade }} unidades</span>
+                                    </p>
+
+                                    <form method="POST" action="{{ route('Vendas.salvar') }}" class="mt-3">
+                                        @csrf
+                                        <input type="hidden" name="produto_id" value="{{ $produtoSelecionado->id }}">
+                                        <div class="row align-items-end">
+                                            <div class="col-md-6">
+                                                <label for="quantidade" class="form-label">Quantidade a vender</label>
+                                                <input type="number" name="quantidade" id="quantidade" 
+                                                    class="form-control" required min="1" 
+                                                    max="{{ $produtoSelecionado->quantidade }}"
+                                                    oninput="calcularTotal(this.value, {{ $produtoSelecionado->preco }})">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="total" class="form-label">Total da Venda</label>
+                                                <input type="text" id="total" class="form-control" readonly>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-success w-100 mt-3">
+                                            <i class="fas fa-check-circle me-2"></i>Confirmar Venda
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
-        @endif
-        <div class="btn-voltar">
-            <a href="{{ url('/') }}">
-                <button type="button">Voltar</button>
-            </a>
         </div>
     </div>
-</body>
-</html>
+</div>
+@endsection
+
+@section('scripts')
+<script>
+function calcularTotal(quantidade, preco) {
+    const total = quantidade * preco;
+    document.getElementById('total').value = 'R$ ' + total.toLocaleString('pt-BR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+}
+
+$(document).ready(function() {
+    // Inicializa máscaras e outros comportamentos
+    $('.money').mask('#.##0,00', {reverse: true});
+});
+</script>
+@endsection

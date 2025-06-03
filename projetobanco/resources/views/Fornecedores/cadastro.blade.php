@@ -6,6 +6,12 @@
 @section('page-description', 'Gerencie o cadastro de fornecedores')
 
 @section('content')
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <form action="{{ route('Fornecedores.salvar') }}" method="POST" class="form">
         @csrf
         <div class="form-group">
@@ -14,8 +20,9 @@
         </div>
 
         <div class="form-group">
-            <label for="cnpj">CNPJ</label>
-            <input type="text" class="form-control" id="cnpj" name="cnpj" required>
+            <label for="documento">CNPJ/CPF</label>
+            <input type="text" class="form-control" id="documento" name="documento" maxlength="18" required>
+            <small class="form-text text-muted">Digite apenas números (11 dígitos para CPF ou 14 para CNPJ)</small>
         </div>
 
         <div class="form-group">
@@ -25,7 +32,8 @@
 
         <div class="form-group">
             <label for="telefone">Telefone</label>
-            <input type="tel" class="form-control" id="telefone" name="telefone" required>
+            <input type="tel" class="form-control" id="telefone" name="telefone" maxlength="15" required>
+            <small class="form-text text-muted">Digite apenas números (DDD + número)</small>
         </div>
 
         <div class="form-group">
@@ -34,9 +42,24 @@
         </div>
 
         <div class="form-group">
-            <label for="contato">Nome do Contato</label>
-            <input type="text" class="form-control" id="contato" name="contato" required>
+            <label for="produtos_disponiveis">Produtos Disponíveis</label>
+            <textarea class="form-control" id="produtos_disponiveis" name="produtos_disponiveis" rows="3" required></textarea>
         </div>
+
+        <div class="form-group">
+            <label for="formas_pagamento">Formas de Pagamento</label>
+            <textarea class="form-control" id="formas_pagamento" name="formas_pagamento" rows="3" required></textarea>
+        </div>
+
+        @if($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
         <div style="display: flex; gap: 1rem;">
             <button type="submit" class="btn btn-success">
@@ -58,10 +81,12 @@
                 <thead>
                     <tr>
                         <th>Nome/Razão Social</th>
-                        <th>CNPJ</th>
+                        <th>CNPJ/CPF</th>
                         <th>E-mail</th>
                         <th>Telefone</th>
-                        <th>Contato</th>
+                        <th>Endereço</th>
+                        <th>Produtos</th>
+                        <th>Pagamentos</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -69,10 +94,12 @@
                     @foreach($fornecedores as $fornecedor)
                         <tr>
                             <td>{{ $fornecedor->nome }}</td>
-                            <td>{{ $fornecedor->cnpj }}</td>
+                            <td>{{ formatarDocumento($fornecedor->documento) }}</td>
                             <td>{{ $fornecedor->email }}</td>
-                            <td>{{ $fornecedor->telefone }}</td>
-                            <td>{{ $fornecedor->contato }}</td>
+                            <td>{{ formatarTelefone($fornecedor->telefone) }}</td>
+                            <td>{{ $fornecedor->endereco }}</td>
+                            <td>{{ $fornecedor->produtos_disponiveis }}</td>
+                            <td>{{ $fornecedor->formas_pagamento }}</td>
                             <td style="display: flex; gap: 0.5rem;">
                                 <a href="{{ route('Fornecedores.editar', $fornecedor->id) }}" class="btn btn-primary">
                                     <i class="fas fa-edit"></i>
@@ -95,22 +122,68 @@
 
 @section('scripts')
 <script>
-    // Máscara para CNPJ
-    document.getElementById('cnpj').addEventListener('input', function (e) {
-        let value = e.target.value.replace(/\D/g, '');
-        if (value.length <= 14) {
-            value = value.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
-            e.target.value = value;
+    // Função para aplicar máscara de CPF/CNPJ
+    function mascaraDocumento(valor) {
+        valor = valor.replace(/\D/g, '');
+        if (valor.length <= 11) {
+            // CPF
+            valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+            valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+            valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+        } else {
+            // CNPJ
+            valor = valor.replace(/^(\d{2})(\d)/, '$1.$2');
+            valor = valor.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
+            valor = valor.replace(/\.(\d{3})(\d)/, '.$1/$2');
+            valor = valor.replace(/(\d{4})(\d)/, '$1-$2');
         }
+        return valor;
+    }
+
+    // Função para aplicar máscara de telefone
+    function mascaraTelefone(valor) {
+        valor = valor.replace(/\D/g, '');
+        if (valor.length <= 11) {
+            if (valor.length <= 10) {
+                // Telefone fixo
+                valor = valor.replace(/(\d{2})(\d)/, '($1) $2');
+                valor = valor.replace(/(\d{4})(\d)/, '$1-$2');
+            } else {
+                // Celular
+                valor = valor.replace(/(\d{2})(\d)/, '($1) $2');
+                valor = valor.replace(/(\d{5})(\d)/, '$1-$2');
+            }
+        }
+        return valor;
+    }
+
+    // Aplicar máscaras nos campos
+    document.getElementById('documento').addEventListener('input', function(e) {
+        e.target.value = mascaraDocumento(e.target.value);
     });
 
-    // Máscara para telefone
-    document.getElementById('telefone').addEventListener('input', function (e) {
-        let value = e.target.value.replace(/\D/g, '');
-        if (value.length <= 11) {
-            value = value.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
-            e.target.value = value;
-        }
+    document.getElementById('telefone').addEventListener('input', function(e) {
+        e.target.value = mascaraTelefone(e.target.value);
     });
 </script>
 @endsection
+
+@php
+function formatarDocumento($documento) {
+    $doc = preg_replace('/[^0-9]/', '', $documento);
+    if (strlen($doc) === 11) {
+        return substr($doc, 0, 3) . '.' . substr($doc, 3, 3) . '.' . substr($doc, 6, 3) . '-' . substr($doc, 9);
+    } else {
+        return substr($doc, 0, 2) . '.' . substr($doc, 2, 3) . '.' . substr($doc, 5, 3) . '/' . substr($doc, 8, 4) . '-' . substr($doc, 12);
+    }
+}
+
+function formatarTelefone($telefone) {
+    $tel = preg_replace('/[^0-9]/', '', $telefone);
+    if (strlen($tel) === 11) {
+        return '(' . substr($tel, 0, 2) . ') ' . substr($tel, 2, 5) . '-' . substr($tel, 7);
+    } else {
+        return '(' . substr($tel, 0, 2) . ') ' . substr($tel, 2, 4) . '-' . substr($tel, 6);
+    }
+}
+@endphp

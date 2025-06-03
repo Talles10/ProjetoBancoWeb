@@ -1,145 +1,117 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Fornecedores</title>
-</head>
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: Arial, sans-serif;
-    }
+@section('title', 'Editar Fornecedor')
 
-    .container {
-        width: 350px;
-        margin: 50px auto;
-        padding: 20px;
-        border-radius: 10px;
-        background: #f4f4f4;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        text-align: center;
-    }
+@section('page-title', 'Editar Fornecedor')
+@section('page-description', 'Atualize os dados do fornecedor')
 
-    h2 {
-        margin-bottom: 20px;
-        color: #333;
-    }
+@section('content')
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
 
-    .listar {
-        display: flex;
-        justify-content: center;
-        margin-top: 30px;
-    }
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
-    label {
-        display: block;
-        margin: 10px 0 5px;
-        font-weight: bold;
-        text-align: left;
-    }
-
-    input,
-    select {
-        position: relative;
-        /* Torna o z-index funcional */
-        z-index: 10;
-        width: 100%;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        margin-bottom: 10px;
-    }
-
-    button {
-        margin-top: 20px;
-        width: 100%;
-        padding: 10px;
-        background: #007bff;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        transition: background 0.3s ease;
-    }
-
-    button:hover {
-        background: #0056b3;
-    }
-
-    table {
-        width: 80%;
-        border-collapse: collapse;
-        box-shadow: 0 4px 8px rgba(0, 0, 255, 0.2);
-        margin-left: 100px;
-        margin-bottom: 20px;
-    }
-
-    th,
-    td {
-        border: 1px solid #1e90ff;
-        padding: 10px;
-        text-align: center;
-    }
-
-    th {
-        background-color: #1e90ff;
-        color: white;
-    }
-
-    tr:nth-child(even) {
-        background-color: rgb(255, 255, 255);
-    }
-
-    tr:nth-child(odd) {
-        background-color: #f2f2f2;
-    }
-
-    .error-messages ul {
-        color: red;
-        list-style-type: none;
-    }
-    .success {
-        color: green;
-    }
-</style>
-
-<body>
-    <h2>Editar Produto</h2>
-
-    <form method="POST" action="{{ route('Fornecedores.atualizar', $fornecedor->id) }}">
+    <form action="{{ route('Fornecedores.atualizar', $fornecedor->id) }}" method="POST" class="form">
         @csrf
-        <label for="id">Código:</label>
-        <input type="text" id="id" name="id" value="{{$fornecedor->id}}" required>
+        @method('PUT')
+        
+        <div class="form-group">
+            <label for="nome">Nome/Razão Social</label>
+            <input type="text" class="form-control" id="nome" name="nome" value="{{ old('nome', $fornecedor->nome) }}" maxlength="80" required>
+        </div>
 
-        <label for="nome">Nome:</label>
-        <input type="text" id="nome" name="nome" value="{{$fornecedor->nome}}" required>
+        <div class="form-group">
+            <label for="documento">CPF/CNPJ</label>
+            <input type="text" class="form-control" id="documento" name="documento" value="{{ old('documento', $fornecedor->documento) }}" maxlength="18" required>
+            <small class="form-text text-muted">Digite apenas números (11 dígitos para CPF ou 14 para CNPJ)</small>
+        </div>
 
-        <label for="documento">Documento(CPF/CNPJ):</label>
-        <input type="text" id="documento" name="documento" value="{{$fornecedor->documento}}" required>
+        <div class="form-group">
+            <label for="email">E-mail</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ old('email', $fornecedor->email) }}" maxlength="100" required>
+        </div>
 
-        <label for="endereco">Endereço(Bairro/Rua/Numero):</label>
-        <input type="text " id="endereco" name="endereco" value="{{$fornecedor->endereco}}" required>
+        <div class="form-group">
+            <label for="telefone">Telefone</label>
+            <input type="tel" class="form-control" id="telefone" name="telefone" value="{{ old('telefone', $fornecedor->telefone) }}" maxlength="15" required>
+            <small class="form-text text-muted">Digite apenas números (DDD + número)</small>
+        </div>
 
-        <label for="produtos_disponiveis">Produtos Disponíveis:</label>
-        <input type="text" id="produtos_disponiveis" name="produtos_disponiveis" value="{{$fornecedor->produtos_disponiveis}}" required>
+        <div class="form-group">
+            <label for="endereco">Endereço</label>
+            <input type="text" class="form-control" id="endereco" name="endereco" value="{{ old('endereco', $fornecedor->endereco) }}" maxlength="100" required>
+        </div>
 
-        <label for="formas_pagamento">Formas de Pagamento:</label>
-        <input type="text" id="formas_pagamento" name="formas_pagamento" value="{{$fornecedor->formas_pagamento}}" required>
+        <div class="form-group">
+            <label for="produtos_disponiveis">Produtos Disponíveis</label>
+            <textarea class="form-control" id="produtos_disponiveis" name="produtos_disponiveis" rows="3" required>{{ old('produtos_disponiveis', $fornecedor->produtos_disponiveis) }}</textarea>
+            <small class="form-text text-muted">Liste os produtos separados por vírgula ou nova linha</small>
+        </div>
 
-        <label for="telefone">Telefone:</label>
-        <input type="text" id="telefone" name="telefone" value="{{$fornecedor->telefone}}" required>
+        <div class="form-group">
+            <label for="formas_pagamento">Formas de Pagamento</label>
+            <textarea class="form-control" id="formas_pagamento" name="formas_pagamento" rows="3" required>{{ old('formas_pagamento', $fornecedor->formas_pagamento) }}</textarea>
+            <small class="form-text text-muted">Liste as formas de pagamento separadas por vírgula ou nova linha</small>
+        </div>
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" value="{{$fornecedor->email}}" required>
-
-        <button type="submit">Atualizar</button>
+        <div style="display: flex; gap: 1rem;">
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-save"></i>
+                Atualizar Fornecedor
+            </button>
+            
+            <a href="{{ route('Fornecedores.cadastro') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i>
+                Voltar
+            </a>
+        </div>
     </form>
+@endsection
 
-</body>
+@section('scripts')
+<script>
+    // Máscara para CPF/CNPJ
+    document.getElementById('documento').addEventListener('input', function (e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length <= 11) {
+            // CPF
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+        } else {
+            // CNPJ
+            value = value.replace(/^(\d{2})(\d)/, '$1.$2');
+            value = value.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
+            value = value.replace(/\.(\d{3})(\d)/, '.$1/$2');
+            value = value.replace(/(\d{4})(\d)/, '$1-$2');
+        }
+        e.target.value = value;
+    });
 
-</html>
+    // Máscara para telefone
+    document.getElementById('telefone').addEventListener('input', function (e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length <= 11) {
+            if (value.length === 11) {
+                // Celular
+                value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+            } else {
+                // Telefone fixo
+                value = value.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+            }
+            e.target.value = value;
+        }
+    });
+</script>
+@endsection

@@ -18,6 +18,9 @@ class DatabaseSeeder extends Seeder //Isso serve para que o seeder funcione
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        $this->call(CategoriaSeeder::class);
+        $this->call([
+            CategoriaSeeder::class,
+            FornecedorSeeder::class,
+        ]);
     }
 }

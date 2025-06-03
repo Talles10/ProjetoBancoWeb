@@ -8,6 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class Funcionario extends Model
 {
     use HasFactory;
-    protected $table = 'Funcionarios'; 
-    protected $fillable = ['nome', 'documento','salario','cargo','email'];
+    
+    protected $table = 'funcionarios';
+
+    protected $fillable = [
+        'nome',
+        'documento',
+        'salario',
+        'cargo',
+        'email'
+    ];
+
+    protected $casts = [
+        'salario' => 'decimal:2'
+    ];
 }
