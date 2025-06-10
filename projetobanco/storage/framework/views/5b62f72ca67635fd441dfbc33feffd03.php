@@ -1,20 +1,20 @@
-
-
 <?php $__env->startSection('title', 'Relatório de Vendas'); ?>
 
 <?php $__env->startSection('content'); ?>
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h4 class="mb-0">Vendas Realizadas</h4>
-                <div>
-                    <button class="btn btn-outline-primary me-2" onclick="exportarPDF()">
-                        <i class="fas fa-file-pdf me-2"></i>Exportar PDF
-                    </button>
-                    <button class="btn btn-outline-success" onclick="exportarExcel()">
-                        <i class="fas fa-file-excel me-2"></i>Exportar Excel
-                    </button>
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Vendas Realizadas</h4>
+                    <div class="btn-group">
+                        <a href="javascript:void(0)" onclick="exportarPDF()" class="btn btn-light" title="Exportar PDF">
+                            <i class="fas fa-file-pdf text-danger me-2"></i>PDF
+                        </a>
+                        <button class="btn btn-light ms-2" onclick="exportarExcel()" title="Exportar Excel">
+                            <i class="fas fa-file-excel text-success me-2"></i>Excel
+                        </button>
+                    </div>
                 </div>
             </div>
             <div class="card-body">
@@ -113,12 +113,23 @@
 <?php $__env->startSection('scripts'); ?>
 <script>
 function exportarPDF() {
-    // Implementar exportação para PDF
-    alert('Funcionalidade de exportação para PDF em desenvolvimento');
+    const dataInicio = document.getElementById('data_inicio').value;
+    const dataFim = document.getElementById('data_fim').value;
+    
+    let url = '<?php echo e(route('Relatorios.vendas.pdf')); ?>';
+    const params = new URLSearchParams();
+    
+    if (dataInicio) params.append('data_inicio', dataInicio);
+    if (dataFim) params.append('data_fim', dataFim);
+    
+    if (params.toString()) {
+        url += '?' + params.toString();
+    }
+    
+    window.location.href = url;
 }
 
 function exportarExcel() {
-    // Implementar exportação para Excel
     alert('Funcionalidade de exportação para Excel em desenvolvimento');
 }
 

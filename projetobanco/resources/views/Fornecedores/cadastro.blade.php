@@ -1,9 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.financeiro')
 
-@section('title', 'Cadastro de Fornecedores')
-
-@section('page-title', 'Cadastro de Fornecedores')
-@section('page-description', 'Gerencie o cadastro de fornecedores')
+@section('title', 'Cadastrar Fornecedor')
 
 @section('content')
     @if(session('success'))
@@ -12,66 +9,56 @@
         </div>
     @endif
 
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <form action="{{ route('Fornecedores.salvar') }}" method="POST" class="form">
         @csrf
         <div class="form-group">
             <label for="nome">Nome/Razão Social</label>
-            <input type="text" class="form-control" id="nome" name="nome" required>
+            <input type="text" class="form-control" id="nome" name="nome" value="{{ old('nome') }}" maxlength="80" required>
         </div>
 
         <div class="form-group">
             <label for="documento">CNPJ/CPF</label>
-            <input type="text" class="form-control" id="documento" name="documento" maxlength="18" required>
+            <input type="text" class="form-control" id="documento" name="documento" value="{{ old('documento') }}" maxlength="18" required>
             <small class="form-text text-muted">Digite apenas números (11 dígitos para CPF ou 14 para CNPJ)</small>
         </div>
 
         <div class="form-group">
             <label for="email">E-mail</label>
-            <input type="email" class="form-control" id="email" name="email" required>
+            <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" maxlength="100" required>
         </div>
 
         <div class="form-group">
             <label for="telefone">Telefone</label>
-            <input type="tel" class="form-control" id="telefone" name="telefone" maxlength="15" required>
-            <small class="form-text text-muted">Digite apenas números (DDD + número)</small>
+            <input type="text" class="form-control" id="telefone" name="telefone" value="{{ old('telefone') }}" maxlength="15" required>
+            <small class="form-text text-muted">Digite apenas números (10 ou 11 dígitos)</small>
         </div>
 
         <div class="form-group">
             <label for="endereco">Endereço</label>
-            <input type="text" class="form-control" id="endereco" name="endereco" required>
+            <input type="text" class="form-control" id="endereco" name="endereco" value="{{ old('endereco') }}" maxlength="100" required>
         </div>
 
         <div class="form-group">
             <label for="produtos_disponiveis">Produtos Disponíveis</label>
-            <textarea class="form-control" id="produtos_disponiveis" name="produtos_disponiveis" rows="3" required></textarea>
+            <textarea class="form-control" id="produtos_disponiveis" name="produtos_disponiveis" rows="3" maxlength="255" required>{{ old('produtos_disponiveis') }}</textarea>
         </div>
 
         <div class="form-group">
             <label for="formas_pagamento">Formas de Pagamento</label>
-            <textarea class="form-control" id="formas_pagamento" name="formas_pagamento" rows="3" required></textarea>
+            <textarea class="form-control" id="formas_pagamento" name="formas_pagamento" rows="3" maxlength="255" required>{{ old('formas_pagamento') }}</textarea>
         </div>
 
-        @if($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
-        <div style="display: flex; gap: 1rem;">
-            <button type="submit" class="btn btn-success">
-                <i class="fas fa-save"></i>
-                Salvar Fornecedor
-            </button>
-            
-            <a href="{{ route('home') }}" class="btn btn-primary">
-                <i class="fas fa-arrow-left"></i>
-                Voltar
-            </a>
-        </div>
+        <button type="submit" class="btn btn-primary">Cadastrar Fornecedor</button>
     </form>
 
     @if(isset($fornecedores) && count($fornecedores) > 0)
@@ -94,9 +81,9 @@
                     @foreach($fornecedores as $fornecedor)
                         <tr>
                             <td>{{ $fornecedor->nome }}</td>
-                            <td>{{ formatarDocumento($fornecedor->documento) }}</td>
+                            <td>{{ \App\Helpers\FormatHelper::formatarDocumento($fornecedor->documento) }}</td>
                             <td>{{ $fornecedor->email }}</td>
-                            <td>{{ formatarTelefone($fornecedor->telefone) }}</td>
+                            <td>{{ \App\Helpers\FormatHelper::formatarTelefone($fornecedor->telefone) }}</td>
                             <td>{{ $fornecedor->endereco }}</td>
                             <td>{{ $fornecedor->produtos_disponiveis }}</td>
                             <td>{{ $fornecedor->formas_pagamento }}</td>
@@ -167,23 +154,3 @@
     });
 </script>
 @endsection
-
-@php
-function formatarDocumento($documento) {
-    $doc = preg_replace('/[^0-9]/', '', $documento);
-    if (strlen($doc) === 11) {
-        return substr($doc, 0, 3) . '.' . substr($doc, 3, 3) . '.' . substr($doc, 6, 3) . '-' . substr($doc, 9);
-    } else {
-        return substr($doc, 0, 2) . '.' . substr($doc, 2, 3) . '.' . substr($doc, 5, 3) . '/' . substr($doc, 8, 4) . '-' . substr($doc, 12);
-    }
-}
-
-function formatarTelefone($telefone) {
-    $tel = preg_replace('/[^0-9]/', '', $telefone);
-    if (strlen($tel) === 11) {
-        return '(' . substr($tel, 0, 2) . ') ' . substr($tel, 2, 5) . '-' . substr($tel, 7);
-    } else {
-        return '(' . substr($tel, 0, 2) . ') ' . substr($tel, 2, 4) . '-' . substr($tel, 6);
-    }
-}
-@endphp
