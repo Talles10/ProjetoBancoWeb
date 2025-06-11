@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title') - Perfumes da Chiquinha</title>
+    <title><?php echo $__env->yieldContent('title'); ?> - Perfumes da Chiquinha</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -264,7 +264,7 @@
         }
     }
     </style>
-    @yield('styles')
+    <?php echo $__env->yieldContent('styles'); ?>
 </head>
 
 <body>
@@ -275,57 +275,57 @@
 
         <ul class="nav-menu">
             <li class="nav-item">
-                <a href="{{ route('home') }}" class="nav-link">
+                <a href="<?php echo e(route('home')); ?>" class="nav-link">
                     <i class="fas fa-home"></i>
                     Dashboard
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ route('Produtos.cadastro') }}" class="nav-link">
+                <a href="<?php echo e(route('Produtos.cadastro')); ?>" class="nav-link">
                     <i class="fas fa-box"></i>
                     Produtos
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ route('Clientes.cadastro') }}" class="nav-link">
+                <a href="<?php echo e(route('Clientes.cadastro')); ?>" class="nav-link">
                     <i class="fas fa-users"></i>
                     Clientes
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ route('Fornecedores.cadastro') }}" class="nav-link">
+                <a href="<?php echo e(route('Fornecedores.cadastro')); ?>" class="nav-link">
                     <i class="fas fa-truck"></i>
                     Fornecedores
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ route('Funcionarios.cadastro') }}" class="nav-link">
+                <a href="<?php echo e(route('Funcionarios.cadastro')); ?>" class="nav-link">
                     <i class="fas fa-user-tie"></i>
                     Funcionários
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ route('Vendas.cadastro') }}" class="nav-link">
+                <a href="<?php echo e(route('Vendas.cadastro')); ?>" class="nav-link">
                     <i class="fas fa-shopping-cart"></i>
                     Vendas
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ route('Compras.cadastro') }}" class="nav-link">
+                <a href="<?php echo e(route('Compras.cadastro')); ?>" class="nav-link">
                     <i class="fas fa-shopping-bag"></i>
                     Compras
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ route('Relatorios.vendas') }}" class="nav-link">
+                <a href="<?php echo e(route('Relatorios.vendas')); ?>" class="nav-link">
                     <i class="fas fa-chart-bar"></i>
                     Relatórios
                 </a>
             </li>
         </ul>
 
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
+        <form method="POST" action="<?php echo e(route('logout')); ?>">
+            <?php echo csrf_field(); ?>
             <button type="submit" class="logout-btn">
                 <i class="fas fa-sign-out-alt"></i>
                 Sair
@@ -334,29 +334,31 @@
     </nav>
 
     <main class="main-content">
-        @if(session('success'))
+        <?php if(session('success')): ?>
         <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-        @endif
+            <?php echo e(session('success')); ?>
 
-        @if(session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
         </div>
-        @endif
+        <?php endif; ?>
+
+        <?php if(session('error')): ?>
+        <div class="alert alert-danger">
+            <?php echo e(session('error')); ?>
+
+        </div>
+        <?php endif; ?>
 
         <div class="page-header">
-            <h2>@yield('page-title')</h2>
-            <p>@yield('page-description')</p>
+            <h2><?php echo $__env->yieldContent('page-title'); ?></h2>
+            <p><?php echo $__env->yieldContent('page-description'); ?></p>
         </div>
 
         <div class="content-card">
-            @yield('content')
+            <?php echo $__env->yieldContent('content'); ?>
         </div>
     </main>
 
-    @yield('scripts')
+    <?php echo $__env->yieldContent('scripts'); ?>
 </body>
 
-</html>
+</html><?php /**PATH C:\Users\higor\OneDrive\Documentos\GitHub\ProjetoBancoWeb\projetobanco\resources\views/layouts/app.blade.php ENDPATH**/ ?>
